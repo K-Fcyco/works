@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赵焕旭 - 创意作品集</title>
+    <!-- 引入谷歌字体，增加设计感 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. 设计系统 (Design Tokens) --- */
+        :root {
+            --bg-body: #DCF9E3; /* 极浅的灰，比纯白更有质感 */
+            --bg-card: #ffffff;
+            --text-primary: #2c2c2c;
+            --text-secondary: #595959;
+            --text-tertiary: #8c9eff;
+            --accent-color: #6b4c9a; /* 高级黑作为强调色 */
+            --border-color: #d1e7dd;
+            --shadow-sm: 0 4px 12px rgba(107, 76, 154, 0.05);
+            --shadow-md: 0 12px 24px rgba(0,0,0,0.08);
+            --radius-md: 12px;
+            --font-serif: 'Noto Serif SC', serif; /* 标题字体 */
+            --font-sans: 'Inter', sans-serif; /* 正文字体 */
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- 2. 基础重置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        /* --- 3. 布局结构 (Layout) --- */
+        .app-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 320px 1fr; /* 左侧固定320px，右侧自适应 */
+            gap: 60px;
+            min-height: 100vh;
+        }
+
+        /* --- 4. 左侧个人简介 (Profile Sidebar) --- */
+        .profile-sidebar {
+            position: sticky;
+            top: 40px;
+            height: fit-content;
+        }
+
+        .avatar-box {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .avatar-box:hover img { transform: scale(1.05); }
+
+        .profile-name {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .profile-meta {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+            padding-left: 12px;
+            border-left: 2px solid var(--text-primary);
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+        .profile-bio p { margin-bottom: 8px; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: var(--text-primary);
+            color: #fff;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--text-primary);
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- 5. 右侧内容区 (Content Grid) --- */
+        .content-area {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .section-group { margin-bottom: 60px; }
+        
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+            margin-left: 16px;
+        }
+
+        /* 卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 180px; /* 固定高度，看起来整齐 */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            background: #f0f0f0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .card-arrow {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+        /* --- 6. 详情页弹窗 (Modal) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px); /* 毛玻璃效果 */
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-container {
+            background: #fff;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 48px;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px; right: 24px;
+            background: #f0f0f0;
+            border: none;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--text-primary); color: #fff; }
+
+        /* 详情内容样式 */
+        .detail-header { border-bottom: 1px solid #eee; padding-bottom: 24px; margin-bottom: 32px; }
+        .detail-tag { 
+            font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; 
+            color: var(--text-tertiary); font-weight: 700; display: block; margin-bottom: 8px; 
+        }
+        .detail-title { font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 12px; }
+        .detail-meta,.detail-platform { font-size: 0.95rem; color: var(--text-secondary); background: #f9f9f9; padding: 8px 16px; border-radius: 6px; display: inline-block; }
+        
+		.detail-header a{text-decoration: underline;}
+		.detail-body a{text-decoration: underline;}
+		
+        .detail-body { font-size: 1.05rem; color: #444; line-height: 1.8; }
+        .detail-body h3 { margin-top: 2rem; margin-bottom: 1rem; color: #000; }
+        .detail-body p { margin-bottom: 1rem; }
+        .detail-body img { width: 100%; border-radius: 8px; margin: 1.5rem 0; box-shadow: var(--shadow-sm); }
+        
+        .detail-link-btn {
+            display: inline-block;
+            margin-top: 32px;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            font-weight: 600;
+        }
+        .detail-link-btn:hover { color: #555; }
+
+        /* --- 动画 --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 响应式 --- */
+        @media (max-width: 1024px) {
+            .app-container { grid-template-columns: 280px 1fr; padding: 30px; gap: 40px; }
+        }
+        @media (max-width: 768px) {
+            .app-container { grid-template-columns: 1fr; padding: 20px; gap: 40px; }
+            .profile-sidebar { position: relative; top: 0; text-align: center; }
+            .profile-meta { border-left: none; padding-left: 0; margin-top: 10px; }
+            .avatar-box { width: 160px; margin: 0 auto 24px; }
+            .section-title { font-size: 1.3rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .modal-container { padding: 30px; max-height: 100vh; height: 100%; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- 左侧：个人档案 (Fixed Profile) -->
+        <aside class="profile-sidebar">
+            <div class="avatar-box">
+                <!-- 请替换你的照片 -->
+                <img src="https://img.notionusercontent.com/s3/prod-files-secure%2F8bb9bb82-22c4-48bf-a1b8-1b2608cc8c0e%2Fb2de2969-6d63-4309-9b66-fe3c05577aed%2F%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20241212185834.jpg/size/w=250?exp=1772076663&sig=7eTzLrsjZkmzt3b0QjFegACNzHr1jdyaWD0KLU0Ybjo&id=15a282fb-1b7b-8085-b51b-e171fd766cbf&table=block" alt="赵焕旭">
+            </div>
+            
+            <h1 class="profile-name">赵焕旭</h1>
+            <div class="profile-meta">2000.03.20 | 贵州毕节</div>
+            
+            <div class="profile-bio">
+                <p>✒️ 风格超多变创意文案写手</p>
+                <p>🎮 大龄二次元，老年KPOP人</p>
+                <p>🔮 INTJ-A 双鱼座</p>
+                <p>✨ 平静但癫的抽象歹毒紫老头</p>
+            </div>
+
+            <a href="https://xhslink.com/m/3AezwMSZt0G" target="_blank" class="btn-primary">
+                <span>小红书主页</span>
+                <span style="margin-left: 8px;">↗</span>
+            </a>
+        </aside>
+
+        <!-- 右侧：作品展示区 (Main Content) -->
+        <main class="content-area">
+
+            <!-- 模块1：工作运营 -->
+            <div class="section-group">
+                <h2 class="section-title">工作运营</h2>
+                <div class="cards-grid">
+                    <article class="card" onclick="openDetail('job1')">
+                        <div class="card-icon">✨</div>
+                        <div>
+                            <h3 class="card-title">上海益优青年中心</h3>
+							<p class="card-desc">职位：新媒体主编</p>
+							
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+
+                    <article class="card" onclick="openDetail('job2')">
+                        <div class="card-icon">🏥</div>
+                        <div>
+                            <h3 class="card-title">上交附属仁济医学院</h3>
+                            <p class="card-desc">职位：教办文员</p>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+
+                    <article class="card" onclick="openDetail('job3')">
+                        <div class="card-icon">🛠️</div>
+                        <div>
+                            <h3 class="card-title">南京酷态科技术有限公司</h3>
+                            <p class="card-desc">职位：新媒体运营</p>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                    
+                    <article class="card" onclick="openDetail('job4')">
+                        <div class="card-icon">💕</div>
+                        <div>
+                            <h3 class="card-title">艾影（上海）商贸有限公司</h3>
+                            <p class="card-desc">职位：官媒内容运营</p>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 模块2：自媒体运营 -->
+            <div class="section-group">
+                <h2 class="section-title">自媒体运营</h2>
+                <div class="cards-grid">
+                    <article class="card" onclick="openDetail('media1')">
+                        <div class="card-icon">📕</div>
+                        <div>
+                            <h3 class="card-title">小红书</h3>
+                            <p class="card-desc">自媒体全线运营</p>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+
+                    <article class="card" onclick="openDetail('media2')">
+                        <div class="card-icon">📺</div>
+                        <div>
+                            <h3 class="card-title">B站 (Bilibili)</h3>
+                            <p class="card-desc">自媒体全线运营</p>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 模块3：文案作品 -->
+            <div class="section-group">
+                <h2 class="section-title">文案作品</h2>
+                <div class="cards-grid">
+                    <article class="card" onclick="openDetail('copy1')">
+                        <div class="card-icon">📚</div>
+                        <div>
+                            <h3 class="card-title">小说及广播剧</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+
+                    <article class="card" onclick="openDetail('copy2')">
+                        <div class="card-icon">🎮</div>
+                        <div>
+                            <h3 class="card-title">游戏宣发文稿</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                    
+                    <article class="card" onclick="openDetail('copy3')">
+                        <div class="card-icon">🕯️</div>
+                        <div>
+                            <h3 class="card-title">杂文及随笔</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+
+                    <article class="card" onclick="openDetail('copy4')">
+                        <div class="card-icon">🎵</div>
+                        <div>
+                            <h3 class="card-title">音乐填词</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 模块4：其他作品 -->
+            <div class="section-group">
+                <h2 class="section-title">其他作品</h2>
+                <div class="cards-grid">
+                    <article class="card" onclick="openDetail('other1')">
+                        <div class="card-icon">📷</div>
+                        <div>
+                            <h3 class="card-title">摄影作品</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                    
+                    <article class="card" onclick="openDetail('other2')">
+                        <div class="card-icon">🎨</div>
+                        <div>
+                            <h3 class="card-title">绘画作品</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+
+                    <article class="card" onclick="openDetail('other3')">
+                        <div class="card-icon">🎙️</div>
+                        <div>
+                            <h3 class="card-title">翻唱作品</h3>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </article>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- 详情页弹窗 -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalContent">
+                <!-- 内容由JS注入 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 内容数据库 (在这里修改你的详细介绍) ---
+        const portfolioData = {
+            'job1': {
+                category: '工作经历',
+                title: '上海益优青年中心',
+                meta: '工作内容：文案编辑、内容排版、推文排期发布 <br/> ',
+				platform:'负责平台：微信公众号',
+                content: `
+                    <p>上海益优青年是一家拥有共青团背书的社会非盈利组织，主营业务为与各大企业联合发起面向大学生的赋能提升公益项目。</p>
+                    <h3>主要成就：</h3>
+                    <ul>
+                        <li>✨ 负责“共赋未来·创益大会”全案宣发，撰写多篇10w+阅读量的推文。</li>
+                        <li>✨ 搭建新媒体矩阵，半年内公众号粉丝增长 200%。</li>
+                        <li>✨ 统筹大学生赋能项目，与50+高校社团建立合作关系。</li>
+                    </ul>
+                    <h3>过往推文示例：</h3>
+                    <div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>2022“共赋未来·创益大会”区域选拔赛，倒计时一天！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/JQCtsC-oPFlzvARhtqva6g">https://mp.weixin.qq.com/s/JQCtsC-oPFlzvARhtqva6g</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>共赋未来 · 区域选拔赛｜最终战前的大比拼，到底有多精彩？</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/JQCtsC-oPFlzvARhtqva6g">https://mp.weixin.qq.com/s/JQCtsC-oPFlzvARhtqva6g</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>我们联合了50+投资机构，寻找下一个新生代企业家。</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/z38zi6AubCHGM6yLjizHaA">https://mp.weixin.qq.com/s/z38zi6AubCHGM6yLjizHaA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>初善创投丨高校学生执委会成员招募</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/dza49V3LjTBEaq5airYxjw">https://mp.weixin.qq.com/s/dza49V3LjTBEaq5airYxjw</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>同学你好！乡村美育官正式招募，就等你来</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/dza49V3LjTBEaq5airYxjw">https://mp.weixin.qq.com/s/dza49V3LjTBEaq5airYxjw</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>“社会实践结合学科专业，支持青年就业创业”高校交流会成功举办｜共赋未来 · 创益大会</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/N3QX4gwXi_N9y3CsaHbkpg">https://mp.weixin.qq.com/s/N3QX4gwXi_N9y3CsaHbkpg</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>普华永道「数据小白训练营·第二季」课程已上线丨快来暑假弯道超车！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/Nd7xRA7QqaWJf5E1X1rfEg">https://mp.weixin.qq.com/s/Nd7xRA7QqaWJf5E1X1rfEg</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>导师天团带你1v1打败焦虑！滚蛋吧，职场中的刻板印象君！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/X8BKvA3RNTiN3N205c1J7Q">https://mp.weixin.qq.com/s/X8BKvA3RNTiN3N205c1J7Q</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>这个夏天，我要你快乐丨暑期特别行动企划</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/KR7yM2kTc1ENnuhmr1wKkQ">https://mp.weixin.qq.com/s/KR7yM2kTc1ENnuhmr1wKkQ</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>2022学生工作伙伴招募丨寻找名为你的火种</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/-rbYgdG6q-77FvGXai3vAA">https://mp.weixin.qq.com/s/-rbYgdG6q-77FvGXai3vAA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>“创新促繁荣”杜邦青年创新大赛六强公布！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/RgS3ELDy5hGAF7zZEXSgEw">https://mp.weixin.qq.com/s/RgS3ELDy5hGAF7zZEXSgEw</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>资深投资人齐聚，点燃新生代企业家的小宇宙！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/jzLuhV0i6CCLNOmAbfjWKA">https://mp.weixin.qq.com/s/jzLuhV0i6CCLNOmAbfjWKA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>2022「青年创想+」丨一起寻找未来移动出行新动力！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/viIYoS6HGelmKwwUzkfPyg">https://mp.weixin.qq.com/s/viIYoS6HGelmKwwUzkfPyg</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>“创新促繁荣” 杜邦青年创新大赛金奖角逐丨青年会让美好的改变发生</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/52Gx7saFUV8OYZnAm8hnzg">https://mp.weixin.qq.com/s/52Gx7saFUV8OYZnAm8hnzg</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>干货课程来啦丨快来看看这些精缩版课程“菜单”！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/XK0LL9c7BDFkUgpEjg6p_w">https://mp.weixin.qq.com/s/XK0LL9c7BDFkUgpEjg6p_w</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>拜托！在渣打银行参加职业体验营超酷的好吗？</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/oabf7l85JyauWsVxJ-5R5g">https://mp.weixin.qq.com/s/oabf7l85JyauWsVxJ-5R5g</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>低碳传播官计划全国五强公布|新生代力量，低碳在行动!</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/YWtnfpkfXl3yiKlrNvmRPg">https://mp.weixin.qq.com/s/YWtnfpkfXl3yiKlrNvmRPg</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>顶峰见丨2022「工科女生未来赋能计划」晋级决赛名单公布</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/-tJDGS3MUorGwHc1Jlqulw">https://mp.weixin.qq.com/s/-tJDGS3MUorGwHc1Jlqulw</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>“同学你好”32强公布！丨原来美育课程还能这么玩！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/Wi_6Z-Ao2QwrDzAI43gG3Q">https://mp.weixin.qq.com/s/Wi_6Z-Ao2QwrDzAI43gG3Q</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>为绿色未来勇敢发声｜GE精益绿色挑战赛第二季</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/MBAuwirzV2TWm-3NOx8SfA">https://mp.weixin.qq.com/s/MBAuwirzV2TWm-3NOx8SfA</a></p>
+                    </div>
+                `
+            },
+            'job2': {
+                category: '实习经历',
+                title: '上交附属仁济临床医学院',
+                meta: '职责：办公室行政工作、部门微信公众号管理',
+				platform:'负责平台：学院微信公众号',
+                content: `
+                    <p>负责部门官方公众号运营，与医院宣传科沟通管理推文制作及排期；</p>
+                    <p>各项会议会务组织，素材拍摄以及文案撰写。</p>
+					<h3>过往推文示例：</h3>
+                    <div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>包一碗热气腾腾的汤圆——临床医学院师生喜迎元宵佳节</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/wZULMNr9mPM-dZVM78l0UA">https://mp.weixin.qq.com/s/wZULMNr9mPM-dZVM78l0UA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>“医路仁生”系列讲座预告丨强叔与医学生面对面</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/Ix2Qiw1SzpU1tYgDkEXJdw">https://mp.weixin.qq.com/s/Ix2Qiw1SzpU1tYgDkEXJdw</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>仁济医院八年制博导简介（系列推文共十三篇，仅贴一篇作为排版示例）</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/P9K0xJ8ncKVjX0iKSzUngA">https://mp.weixin.qq.com/s/P9K0xJ8ncKVjX0iKSzUngA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>4.15国家安全教育日</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/03VxEB7SF2oKhY_0F43dPg">https://mp.weixin.qq.com/s/03VxEB7SF2oKhY_0F43dPg</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>交医2023年教师教学大赛仁济赛区比赛正在进行中</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/e91fKBU2biqwTI3orf6wVQ">https://mp.weixin.qq.com/s/e91fKBU2biqwTI3orf6wVQ</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>仁济公开课第十二周（5.2-5.5）预告（系列推文共四篇，仅贴一篇作为排版示例）</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/OJ6ci89NB6j75w1ETCO2rA">https://mp.weixin.qq.com/s/OJ6ci89NB6j75w1ETCO2rA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>红五月系列活动——“医心向党，唱响仁声”红歌赛初赛圆满落幕，12组选手晋级决赛！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/ja1mvlfABXruAHTrQh7R3w">https://mp.weixin.qq.com/s/ja1mvlfABXruAHTrQh7R3w</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>预告| “医技之长”技能大赛决赛即将开赛啦</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/RU1TaF4Qqw_uRO1uIK_e3A">https://mp.weixin.qq.com/s/RU1TaF4Qqw_uRO1uIK_e3A</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>仁济临床医学院2023届上海市优秀毕业生风采展示（系列推文共三篇，仅贴一篇作为排版展示）</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/RIS8AlUgdfBqktULdYuCdw">https://mp.weixin.qq.com/s/RIS8AlUgdfBqktULdYuCdw</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>预告｜2023年临床医学院“仁济·拾光”公益🔗摄影活动开启啦</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/dZotMrzCLL0V9ZOpsv1ZqQ">https://mp.weixin.qq.com/s/dZotMrzCLL0V9ZOpsv1ZqQ</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>仁济医院浦南分院首次“实习出科考”顺利进行</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/OAh31sfHX10M249LsuB3HA">https://mp.weixin.qq.com/s/OAh31sfHX10M249LsuB3HA</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>预告丨2023上海交通大学医学院教师教学大赛仁济医院赛区决赛即将开幕！</strong></p>
+                        <p><a href="https://mp.weixin.qq.com/s/_Ke9B4f4V-kAJnv9tgEeVQ">https://mp.weixin.qq.com/s/_Ke9B4f4V-kAJnv9tgEeVQ</a></p>
+                    </div>
+                `
+            },
+            'job3': {
+                category: '实习经历',
+                title: '南京酷态科技术有限公司',
+                meta: '职责：视频物料脚本编写、素材拍摄、后期剪辑、排期发布、海外宣发视频脚本撰写、电商平台视频混剪切片',
+				platform:'负责平台：酷态科（<a href="https://space.bilibili.com/3493104514500656?spm_id_from=333.337.0.0" target="_blank">B站</a>、<a href="https://www.douyin.com/user/MS4wLjABAAAAvDAP2Clp-RSOV2b9g2OFjOaEEJ3ItNq-TUtfokBebdUSCr41Dl9gHyVowkn0knAR?from_tab_name=main" target="_blank">抖音</a>、<a href="https://www.kuaishou.com/profile/3xsnys7fsru4ztg" target="_blank">快手</a>、<a href="https://weibo.com/cuktech" target="_blank">微博</a>、视频号、淘宝、京东）ZMI（<a href="https://www.douyin.com/user/MS4wLjABAAAA1IGLT522RDUX5Y3trLuvu914Y9BDZiDBzSqQXvaB-XQsKV6kUiGxqEK20Y6uDoM4?from_tab_name=main" target="_blank">抖音</a>）',
+                content: `
+					<h3>在职期间负责作品（因一个作品为多平台同步发送，所以仅贴B站视频源作为展示）：</h3>
+                    <div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>CUKTECH酷态科 电能块「自带线」，容量、功率、便捷，我全都要！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1FZ421W7FG/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1FZ421W7FG/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>你为什么会选择一款2万毫安的充电宝？？</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1jy411h7SF/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1jy411h7SF/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>酷态科电能块口袋版，迷你和色彩我都要~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1Hr421L7Qg/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1Hr421L7Qg/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>出门急急忙忙充手机？不如充酷态科10号超级电能棒！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1dJ4m137K6/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1dJ4m137K6/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>快充嘛，易如反掌！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV15T421v7ih/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV15T421v7ih/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>请签收你的暑假旅行搭子</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1or421c7yH/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1or421c7yH/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>插拔不断连？百瓦PPS？酷态科10号充电器CP来了！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1sM4m1S71J/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1sM4m1S71J/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>酷态科10号充电器「CP」，实测来啦！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1gf421Q7Mp/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1gf421Q7Mp/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>酷态科10号充电器vs数字系列充电宝，实测来啦！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1db421H7WW/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1db421H7WW/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>请签收你的米粉学院通知书，更适合中国宝宝体质的魔法咒语来啦！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV12y411z7Nb/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV12y411z7Nb/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>【内含抽奖】你的笔记本外出拯救方案来啦~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1zi421a7Wo/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1zi421a7Wo/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>哎呀~你怎么知道我又搞到一台Osmo Pocket 3啦</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV114421S7cU/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV114421S7cU/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>暑假了，俺就再送一个10号超级电能棒吧~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1sf421z7jq/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">https://www.bilibili.com/video/BV1sf421z7jq/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</a></p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>来，朝烦人的桌面打个响指~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1uy411B7SZ/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1uy411B7SZ/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>真香警告！酷态科15号电能柱，多设备快充小能手！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1iw4m1a7Sk/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1iw4m1a7Sk/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>拒绝被低电量耽误，完美记录专属夏日的每个瞬间~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV186421f7Dm/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV186421f7Dm/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>泰酷辣？酷态美？酷态科告诉你充电那些事儿！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1Uz421z7Y1/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1Uz421z7Y1/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>充电慢到哭？拜拜了您嘞！酷态科15号电能柱来啦~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1GT421k7dp/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1GT421k7dp/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>你说这玩意儿city不city，啊~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1mE421A7qe/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1mE421A7qe/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>E人：我i了，我装的</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1qT421r7fb/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1qT421r7fb/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>少女心爆棚？不，是猛男新宠！酷态科电能块沙滩粉~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1uz421i7Ay/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1uz421i7Ay/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>微光半透，全能快充，CUKTECH酷态科电能块「探索版」来了！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1aM4m1y7rQ/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1aM4m1y7rQ/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>酷态科10号充电器CP, 你最心水哪个颜色，速来站队！</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV19E4m1X7M5/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV19E4m1X7M5/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>透明小身材，多设备兼容，酷态科电能块探索版来啦~</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1Fm4213786/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1Fm4213786/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>是谁？有一块藏不住动态功率的TFT彩屏呀？</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1yM4m1y7uj/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1yM4m1y7uj/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+					<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0;">
+                        <p><strong>灯光交织，银色镜面反射着璀璨的光芒 “水滴”在数字世界的海洋里静静航行</strong></p>
+                        <p><a href="https://www.bilibili.com/video/BV1tcHCemES7/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank"></a>https://www.bilibili.com/video/BV1tcHCemES7/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767</p>
+                    </div>
+                `
+            },
+            'job4': {
+                category: '实习经历',
+                title: '艾影（上海）商贸有限公司',
+                meta: '职责：官媒内容运营、活动运营',
+				platform:'负责平台：<a href="https://weibo.com/5812689806?refer_flag=1001030103" target="_blank">艾影官方微博</a>、<a href="https://mp.weixin.qq.com/s/dZPEQ6jakbulGt7f3KJDRA" target="_blank">艾影官方服务号（贴文超链接）</a>、<a href="https://www.xiaohongshu.com/user/profile/64a52501000000002b0088f9?xsec_token=ABso9GD9UEhOssJvxI6F7lmy5P2Gp07VylShwkWCXsayw%3D&xsec_source=pc_search" target="_blank">艾影官方小红书</a>、<a href="https://mp.weixin.qq.com/s/We4xVdhPF5YIAggkfRBhag" target="_blank">哆啦A梦官方公众号（贴文超链接）</a>',
+                content: `
+					<h3>📌 官媒内容运营</h3>
+                    <p><strong>1. 官方新媒体矩阵运营：</strong><br>全面负责艾影旗下小红书、微博、公众号、官网及童曼公众号的内容更新与日常维护。通过制定内容排期、精细化排版，保障授权商新品资讯及公司活动信息在各平台的一致性与时效性。</p>
+                    <p><strong>2. 国际IP本地化运营：</strong><br>负责轻松小熊（4.3w粉）、角落小伙伴（2.6w粉）及SAN-X三易仕（1.2w粉）等IP官方账号。涵盖内容策略制定、日本原案翻译与文化适配，确保品牌调性与本土用户体验的统一。</p>
+                    <p><strong>3. 独立IP账号孵化：</strong><br>独立负责“大二转行日记”小红书账号，成功打造1篇阅读量超10万的爆款笔记及数篇过万阅读量内容，辅助展会预热及招聘。</p>
+                    <p><strong>4. IP二创精细化运营：</strong><br>接手“San-X全肯定bot”，4个月内粉丝增至9500+，累计互动12w，每周稳定产出万阅爆文。</p>
+                    <p><strong>5. 市场调研：</strong><br>主导完成三丽鸥2021年后国内营销动作调研报告，优化IP商业授权策略。</p>
+
+                    <h3>🎪 活动运营</h3>
+                    <p><strong>1. Bilibili World 2025 参展：</strong><br>负责宣发，与Bilibili对接物料，利用自有矩阵预热，引发用户自传播。</p>
+                    <p><strong>2. 100%哆啦A梦&FRIENDS 巡回特展：</strong><br>全线负责广州站及辅助武汉站社媒宣发。独立完成部分现场物料拍摄与设计，利用AI工具提升效率；制定客诉FAQ与应急方案。</p>
+                    <p><strong>3. 国际授权展：</strong><br>现场高效展示公司IP价值，筛选跟进高意向客户，收集数十条有效业务线索。</p>
+                `
+            },
+            'media1': {
+                category: '自媒体',
+                title: '小红书个人IP',
+                meta: '数据：粉丝 4w+ | 获赞与收藏 48w+',
+                content: `
+					<img src="images/xhs.png" />
+					<p>主页链接：<a href="https://xhslink.com/m/3AezwMSZt0G">https://xhslink.com/m/3AezwMSZt0G</a></p>
+                    <p>账号定位：搞笑、生活、情感、吐槽</p>
+                    <h3>爆文导览（浏览过万、点赞过千）请直接点击阅读：</h3>
+					<p><a href="https://www.xiaohongshu.com/explore/67f35e50000000001c01d74b?xsec_token=ABRzUlrC3L5EES6NMkJ1ShcPpHgM9r0gjFm9iaCpaB1ZQ=&xsec_source=pc_user" target="_blank">小时候真的很容易被大人的颜色吓晕</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/688b16ab0000000025016f8a?source=webshare&xhsshare=pc_web&xsec_token=ABmflKs0GNlCUAnfsq7JuH_OwAlsfE2xvt-G5RF-njRnk=&xsec_source=pc_share" target="_blank">被分享欲很强的路人男的吓晕</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/6889db2e0000000025021a31?xsec_token=ABvJDX9u_IPIYAHHaCTn60yIWLE1EPD1sLThE7Q07bzPU=&xsec_source=pc_user" target="_blank">台风天 在上海打工的地狱笑话</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/6880858200000000100254cc?xsec_token=ABHB1LH2UrDCxSDfEohwOElyFrrsvAq-P34NeJ1MM3ucE=&xsec_source=pc_user" target="_blank">伯伯，男人，嗯</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/6880a1d10000000010011ecf?xsec_token=ABHB1LH2UrDCxSDfEohwOEl-C-jZ9akI6ZhmuGCAQlyR4=&xsec_source=pc_user" target="_blank">伯伯男人</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/686137e1000000000b01fe4a?xsec_token=ABPKP07i-ydKosVC4mVcDDX4dmkwV1c90rHfC4Dk2kqwU=&xsec_source=pc_user" target="_blank">很难想象一个人大学能读成这样</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/685e0997000000000b02c18c?xsec_token=ABT9m5lL_OXQY6YRjRHEkn7LjDsO6lphrmISHIow6JlgI=&xsec_source=pc_user" target="_blank">大学生生活都应该和我一样诡异</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/681ec51a0000000023001fb6?xsec_token=AB3wbHLVvt8r9O7HFJy0-aTjzLJ0FIGYDcieI3dLqLPHw=&xsec_source=pc_user" target="_blank">我对男人的忍耐限度锻炼来自于我爸</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/680b32b9000000001c01211b?xsec_token=AByRN5BWHnMOaXChGpukM7cB_6FWtpvkLCT0NUEweUR7w=&xsec_source=pc_user" target="_blank">请问是所有人工作都会像我一样吗？</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/68064297000000001c032624?xsec_token=ABC4AUC_YlhQ2dPM5irdC56jMKFCAX6SrE9FG71RGNFqM=&xsec_source=pc_user" target="_blank">这大学怎么没把我读亖</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67fb5d8c000000001c0356d9?xsec_token=ABD0uDXTefzvAHYXklGW3oaj22gj_Zs1Cy5tbrggNIH_g=&xsec_source=pc_user" target="_blank">当你凝视深渊，深渊说他痒了</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67fcae22000000001c010fea?xsec_token=ABi1UTfjgFJgYJDGfgFCKXmc5svt8pbgD8ArfbTE1OStc=&xsec_source=pc_user" target="_blank">投稿:逆天中东哥</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67f5423a000000001c01d99f?xsec_token=ABklzUb9I5o9AgTbDt2smQoALj94KbIWrV0Rf6Dp6dwmg=&xsec_source=pc_user" target="_blank">写文没灵感可以看我的人生啊</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67f4fdf0000000001202ff98?xsec_token=AB5plDS3pm-AUmEy-68spxBf_RWEW0f2AY32xUP_3VQmo=&xsec_source=pc_user" target="_blank">主包的青春物语一定有问题</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67f71db0000000001d000769?xsec_token=ABZ02zzVZPnpzTIdaPWVIUll51_v22u2oqyQVezumIYRQ=&xsec_source=pc_user" target="_blank">被男人害成我这样家里该请高人了</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/671b19310000000026035bb4?source=webshare&xhsshare=pc_web&xsec_token=ABjX5Qiq2AHqm9ambi4c8_cAlyQDqhcETc4wXlPixAxWg=&xsec_source=pc_share" target="_blank">天天吃国潮来袭外卖就别惦记这酸奶了</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/642f7c3f0000000013015875?source=webshare&xhsshare=pc_web&xsec_token=ABLIV7jNwrbmmuds7oN6FUezyhJwjBr7qoqfsHoOo980Y=&xsec_source=pc_share" target="_blank">左滑观赏火热难耐的十八岁</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/671a145f000000001b03c22b?source=webshare&xhsshare=pc_web&xsec_token=ABgdwNRTY3tr1pMivoo8xyQmzscfXNK_x-ashlQkHS7Ks=&xsec_source=pc_share" target="_blank">什么阳光大厦B啊</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/66b18259000000001e01d4b0?source=webshare&xhsshare=pc_web&xsec_token=ABWRjjzhHj-z-fkafbIrnQO6TGVw0htSSowsJKWujKL6s=&xsec_source=pc_share" target="_blank">我妈敷的面膜有问题。。</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/66a3be10000000002701f1be?source=webshare&xhsshare=pc_web&xsec_token=ABdJOFElGJ0c8TrbogB9U-xhXV9H1mU-lCfGN6EtOxUUc=&xsec_source=pc_share" target="_blank">谢谢，被封号一个月后我确诊了</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/664173cd000000001e03ae2b?source=webshare&xhsshare=pc_web&xsec_token=AB9MSq4x6wtPPL8RWJ6K-rgrsfuwWZwFy_gxQ4nO6C5aA=&xsec_source=pc_share" target="_blank">室友凌晨摇香菇，马哲备考愁断肠</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6621dca90000000001007b75?source=webshare&xhsshare=pc_web&xsec_token=AB6DpwZ9CRY2VXsbQ2QxwijT9Hrv95eczJFaYRgTQ1saI=&xsec_source=pc_share" target="_blank">炸裂八卦分享：大馋丫头偷吃小辣棍</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6613a3b5000000001a00f626?source=webshare&xhsshare=pc_web&xsec_token=ABv8UfotJ5CQumqBha6GPw7uAu6sCdfUV32FAv8Q_S08w=&xsec_source=pc_share" target="_blank">好多做父母的比小英养牛都歹毒</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6517e06a000000001e0317ed?source=webshare&xhsshare=pc_web&xsec_token=ABqQTBVg5sdGK8GuM_GrlqDNXyctgEx3ZN5Jdj7lQcynA=&xsec_source=pc_share" target="_blank">亲情没有售价，高速路过妈妈</a></p>
+					<p><a href="https://www.notion.so/15a282fb1b7b81af82aad640efdee050?pvs=21" target="_blank">我奶一直致力于让我们全家去见太奶</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/648c05d100000000130169bd?source=webshare&xhsshare=pc_web&xsec_token=ABVD5hvxuJNpkPjU48RLtRo7QcMYGndiu2gjYe_rk4JrA=&xsec_source=pc_share" target="_blank">欲求从杏变食欲也就在一瞬间罢了</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/646d5c1a0000000013033b00?source=webshare&xhsshare=pc_web&xsec_token=ABTINzY9oGPv2vFo-KRemWk3StdTGQKamT5pc-dvp-Umc=&xsec_source=pc_share" target="_blank">最近是在流行刮刮恨吗</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6466f9a50000000011013581?source=webshare&xhsshare=pc_web&xsec_token=AB66kL69KQ_pVtfQ9ToHGekC1CDpAMMITuPSPrERMtoCI=&xsec_source=pc_share" target="_blank">平底锅，一种清纯又不合法的爱情</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6459a944000000001203d056?source=webshare&xhsshare=pc_web&xsec_token=ABNk5ysxpE0pRUBQfcIZ2_8FD9tqX4UNzU0JtgZuJSauE=&xsec_source=pc_share" target="_blank">请你，不要到处抠抠</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/645f7e3f0000000011012cbb?source=webshare&xhsshare=pc_web&xsec_token=ABZyX4o_nEjHk2PL2qFIpHe4gLiHOLj7QPhc9i8bXNOYA=&xsec_source=pc_share" target="_blank">二位在我的房间这么搞不合适吧？</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6452edaa0000000013033870?source=webshare&xhsshare=pc_web&xsec_token=AB82Q5mj1_cNJRh5XTs1P7hzgNNg6aud_QeA20sVGWafE=&xsec_source=pc_share" target="_blank">在上海，就算是龙也玩很大</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6440d73d0000000013034f5f?source=webshare&xhsshare=pc_web&xsec_token=AB0zmJv_5TxxvbRpZ9Djq66kmjvKEhl8W3i2gJ5H2PQZ4=&xsec_source=pc_share" target="_blank">不容老身放肆老身也放肆多回了</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/643fe459000000001303332b?source=webshare&xhsshare=pc_web&xsec_token=ABcWjuokGm10tsYpV6nYzqs6gy8tSIe7lRvAHbs29QTmo=&xsec_source=pc_share" target="_blank">还好那天内裤带蕾丝有时尚一些</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/642e4b740000000013037d08?source=webshare&xhsshare=pc_web&xsec_token=AB4KALjsB-MZPwKi-C-3mk4d9uLsIVKldSIZYu0vnXtWU=&xsec_source=pc_share" target="_blank">厕有惊鸿，尿如游龙</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6430aaf5000000001303f422?source=webshare&xhsshare=pc_web&xsec_token=AB-bjQs5FeX2AUAcBlo8lBvDxXGEvPMHeGCgzwbCg5qtg=&xsec_source=pc_share" target="_blank">被肌肉男胸前的大探照灯吓晕</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/642a88ea0000000013016dc9?source=webshare&xhsshare=pc_web&xsec_token=ABYbi80DQdDEWRMxU5EtzvHwKnk2F5t_V-JczVv_OlrUI=&xsec_source=pc_share" target="_blank">左滑看我被调教后的状态</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/642bbc6d0000000012032f5b?source=webshare&xhsshare=pc_web&xsec_token=ABpWEXllFgmbj7QpABCyvIbfxaeFBkDyPCdY0C9vm18cU=&xsec_source=pc_share" target="_blank">他俩真是在食堂拉丝儿又出浆</a></p>
+					<h3>商单合作</h3>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/64ae165b000000002f025b64?source=webshare&xhsshare=pc_web&xsec_token=ABcXeRLxVNIXFkd19VY3iQ1o6k88RLp8CwNoDSw05LKNo=&xsec_source=pc_share" target="_blank">支付宝理财</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/64b7c15d000000003401517b?source=webshare&xhsshare=pc_web&xsec_token=ABblD71JJ7FC2OvMLUWDDawv-YVMByzbLZZqPEP95Eclg=&xsec_source=pc_share" target="_blank">太二酸菜鱼</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/64cb89ba000000001700db78?source=webshare&xhsshare=pc_web&xsec_token=ABvcLNcwZf76XOYmTCbRK64deZfhru62hANVbH4pzn2HY=&xsec_source=pc_share" target="_blank">香飘飘</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/65c22029000000002b03d13b?source=webshare&xhsshare=pc_web&xsec_token=AB9Gt650un_GDb-044mCHzDt7Izw7xNwDMsvYDmOshwsw=&xsec_source=pc_share" target="_blank">支付宝表情包</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/6665c7ac000000000e032d4b?source=webshare&xhsshare=pc_web&xsec_token=ABEZPe5BSUbw50XqW1gUm-PYccHgmwZ2_QEy_ZV_JJjXQ=&xsec_source=pc_share" target="_blank">闲鱼</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/66696ac9000000000d00fb1b?source=webshare&xhsshare=pc_web&xsec_token=AB8FLqQWi04n5bc8l5Ip8YabIC25hUle4GGxqzFP8YZ9Q=&xsec_source=pc_share" target="_blank">天猫618x美图秀秀</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/671464650000000024014e60?source=webshare&xhsshare=pc_web&xsec_token=ABT2hFW5W5n9qsa2nIp3wQoX4eLrI1SlZ--TG2uCfzcsI=&xsec_source=pc_share" target="_blank">双11x微博罗伯特</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/67262ea2000000001a01cbc1?source=webshare&xhsshare=pc_web&xsec_token=ABAV0wieJlxW_cH6_73DSwvRwaQJb-QFOzY3C3hz12dE4=&xsec_source=pc_share" target="_blank">天猫双11热卖王</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/675ad64e000000000603faee?source=webshare&xhsshare=pc_web&xsec_token=AB214EOYUZAXO4y6PgcQKjIGDY-kFQpFEFSQCH6PPjOvM=&xsec_source=pc_share" target="_blank">淘宝品牌公仔走秀活动</a></p>
+					<p><a href="https://www.xiaohongshu.com/discovery/item/675d02fd000000000700d933?source=webshare&xhsshare=pc_web&xsec_token=ABrf6OrJ3avL5Du9f1-i7wZuI8kY1M7hNp1NK1eoz-HWs=&xsec_source=pc_share" target="_blank">OLAYx付航</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/678a4f9a0000000019006f97?xsec_token=ABztLKKZ8eYmX7raGWBOH0XcENfadZlO5Q-TSHYu0LLRQ=&xsec_source=pc_user" target="_blank">美团买药</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67cc25e3000000002902eeac?xsec_token=ABBB-NuLogH8GgQ0iv_MOd3B75lCc7G4Kku4n2nIBG65M=&xsec_source=pc_user" target="_blank">吉谷热水壶</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/67dbfbb0000000001b03aa84?xsec_token=ABaGaL0RI4rPkuii6Q-tKSCtLcPxXTYAfzczbh1JhSgNs=&xsec_source=pc_user" target="_blank">Leader洗衣机</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/68397a13000000002300d23c?xsec_token=ABd3BSi6ALvObghc-NzL4gtn_wiX6AqXDxiFQgjTfybxo=&xsec_source=pc_user" target="_blank">美团万豪金卡</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/68427bcf000000002203620c?xsec_token=AB2KEo5cA4WXETO4pUMzvhVqYTax6re8y6Vg0sxkXM-9c=&xsec_source=pc_user" target="_blank">花呗</a></p>
+					<p><a href="https://www.xiaohongshu.com/explore/685bc92e000000000d027e36?xsec_token=ABvHKYDC1qLDbLl9w_oohjejZhVlTUy_SeERB5JfjRrzM=&xsec_source=pc_user" target="_blank">元气森林</a></p>
+					
+                `
+            },
+            'media2': {
+                category: '自媒体',
+                title: 'B站个人IP',
+                meta: '数据：粉丝 4w+ | 获赞与收藏 48w+',
+                content: `
+					<img src="images/xhs.png" />
+					<p>主页链接：<a href="https://space.bilibili.com/4630554?spm_id_from=333.1007.0.0" target="_blank">https://space.bilibili.com/4630554?spm_id_from=333.1007.0.0</a></p>
+                    <p>账号定位：两性、情感、生活、吐槽、搞笑</p>
+                    <h3>爆款视频导览：</h3>
+					<p><a href="https://www.bilibili.com/video/BV1FQ4y127o5/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">关于我看一个出家人直播玩他的法♂棒这件事</a></p>
+					<p><a href="https://www.bilibili.com/video/BV1j64y1Y7TH/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">0 与 假 T 的 第 五 爱</a></p>
+					<p><a href="https://www.bilibili.com/video/BV1X44y1L7o9/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">假如烧0有年度报告be like..</a></p>
+					<p><a href="https://www.bilibili.com/video/BV1YJ4m147FT/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">我不在乎那些防窥膜不喜欢我</a></p>
+					<p><a href="https://www.bilibili.com/video/BV11U421d7Sy/?spm_id_from=333.999.0.0&vd_source=87f47954377b365f6d15a00f97872767" target="_blank">点击收获新春女王祝福</a></p>
+					<p>由于B站是我最开始接触自媒体的平台，当时最热的梗就是套着这样的水果头特效讲一些比较炸裂和猎奇的事件，相关视频数据都不错，但是由于文案难度和时间成本以及变现困难等问题更新频率减缓。</p>
+                `
+            },
+			'copy1': {
+                category: '文案作品',
+                title: '小说及广播剧',
+                meta: '类型：悬疑 / 剧情 / 青春',
+                content: `
+                    <h3>小说创作经历：</h3>
+                    <p>写小说这件事其实从我很小的时候我就开始了，最开始是小学在《创新作文》的网站上写了一篇以现实朋友为角色的穿越进网游的小说，一发就获得精华文章的标签。但是小时候的三分钟热度只写了一章我便停止了更新。</p>
+                    <p>后面也断断续续的在百度贴吧创作过一些动画角色的同人文，直到大学形成了自己固定风格和考虑到爱好和受众群体之后才开始正式写作，主要是以短篇为主，平台在QQ空间。</p>
+                    <p>数据很难得到的具体体现，但是从我开始写小说，<strong>两年时间我的空间访客总数达到了100w。</strong></p>
+                    <br/>
+                    <p>下面是几篇我比较满意的一篇，我特别喜欢的文段会进行 highlight 供正在阅读的您一起阅读感受~</p>
+                    
+                    <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                    <h4 style="font-size: 1.5rem;margin-bottom: 20px;">《三伏天》</h4>
+                    
+                    <p>岳蓝恍惚了一下，现在是下午第一节课的课间，刚刚做完眼保健操。</p>
+                    <p>“布鲁？”</p>
+                    <p>汪执月突然叫自己的外号，岳蓝被小小的吓了一跳，一不小心把手边的柠檬苏打水碰掉在了地上。</p>
+                    <p>现在是一天课间时间里大家最容易犯困的时候，异响果然让后排一些已经趴下同学不耐烦地发出“啧”的声音。</p>
+                    <p>“怎么啦？”</p>
+                    <p>汪执月弯腰捡起饮料，把瓶子放在裤腿上擦了擦放回桌上，笑眯眯地看着岳蓝。</p>
+                    <p>这是高二的某个中午，这个场景让岳蓝有些困惑，似乎在某个不曾想起的时空里，这样的场景已经发生过了。</p>
+                    <p>既视感吗？</p>
+                    <p>“啊，没有，就是突然走了一下神。”</p>
+                    <p>“嗯？什么啊，这可真不像你会做的事情。”</p>
+                    <p>确实，岳蓝从小就是一个木讷又严谨的人，本来因为这一点他还蛮自卑的。</p>
+                    <p>但是汪执月告诉他，木讷的人只是把自己的感情都变成了一辈子都无法忘怀的各种细节，像是放进存钱罐一样一点一点的放在心里，等攒到一定程度的时候，沉甸甸的重量，既是心的重量，也是感情的分量。</p>
+                    <p>岳蓝很羡慕汪执月的能说会道，而且就算是一些俏皮话也能明显感觉到汪执月的真诚。</p>
+                    <p>这样的人真厉害。</p>
+                    <p>就连自己被起布鲁这种奇怪的外号也不会生气，这个外号倒是也不难理解，布鲁嘛，BLUE，蓝，从汪执月嘴里叫出来这个外号倒是没让人觉得有什么奇怪的地方，甚至还带上了点儿可爱的意味。</p>
+                    <p>“今天的物理也好难懂啊，真不知道级部怎么安排的，这种死亡时间上物理。”</p>
+                    <p>汪执月一边抱怨着一边趴到了桌上，伸出左手食指戳了戳岳蓝的腿。</p>
+                    <p>“就是说啊，电磁感应原理什么的真的很难懂。”</p>
+                    <p>前桌听到之后也把身体靠在汪执月的桌沿仰天长叹。</p>
+                    
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">岳蓝转过头正好对上汪执月的眼睛，那双眼睛一笑就弯弯的，盛夏的阳光汪在里面，亮晶晶的。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">岳蓝不由自主地把汪执月的手握住，轻轻捏了捏。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">眼角余光扫过去，汪执月笑得更开心了，笑意就像是微微融化的冰淇淋，带着些许凉的甜，从他的眼角溢出来，啪嗒一声打在岳蓝闷热的心里。</strong></p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>“给。”</p>
+                    <p>似乎最好看的晚霞都在中学时代看完了，岳蓝看着天空正出神，猝不及防又被小小吓了一跳。</p>
+                    <p>“啊，谢谢 。”</p>
+                    <p>接过汪执月递过来的乌龙茶，每天放学两人都轮流请对方喝饮料，岳蓝永远都在喝乌龙茶，汪执月永远都在喝可乐。</p>
+                    <p>“我说啊，你今天怎么啦？”</p>
+                    <p>“没怎么啊，为什么突然这么问？”</p>
+                    <p>“就是看你今天老是出神，印象里你从来没这样过啊。”</p>
+                    <p>汪执月抬手把手里的冰可乐贴到岳蓝的额头上，希望这样能让他清醒一点。</p>
+                    <p>“没有，就是觉得。”</p>
+                    <p>额头传来的凉让岳蓝轻轻眯了眯眼睛，微微弯下腰让汪执月的手不用抬那么高。</p>
+                    <p>汪执月看着自己的眼神永远都那么直勾勾，搞得岳蓝总是不好意思和他对视，只好默默把眼神移到了天边，接着说：</p>
+                    <p>“今年热得格外的久呢——”</p>
+                    <p>看了一小会儿远处，岳蓝突然觉得因为自己这份难为情，好像曾经错过了很多有汪执月的瞬间。</p>
+                    <p>这种感觉莫名其妙，但是也促使岳蓝立刻把视线收回到了汪执月的身上，深吸了一口气脱口而出：</p>
+                    <p>“是啊，也许夏天不过去，我就能永远和你呆在一起。”</p>
+                    <p>今天岳蓝确实很反常，居然会说这种话了。</p>
+                    <p>“哈哈哈哈，说什么傻话呢？”</p>
+                    <p>“没什么，可乐真有这么好喝吗？你总是抱怨自己长不高，说不定就和你总喝可乐有关系呢？”</p>
+                    <p>“那照你的说法，我还嫌你太大个了呢，喝了可乐你就能缩回来点儿了？你喝一口试试？”</p>
+
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">凝结在可乐罐头外的水珠，将晚霞浓缩进了自己的光斑中，把光线抛成一种更耀眼的红。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">这样的颜色衬得眼前的少年双颊都红扑扑的，不知为什么，岳蓝心里呲出来的第一团情感是怀念。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">他好怀念这样的画面。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">就像是打开可乐不受控制的气泡，一瞬间的思念全都浮在他的眼里。</strong></p>
+
+                    <p>“你到底喝不喝？”</p>
+                    <p>“不喝，看你喝就好了。”</p>
+                    <p>岳蓝笑了笑。</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>学生时代的周末似乎总是逃不过补习班，但是因为有岳蓝，汪执月倒是省了一大笔补课费。</p>
+                    <p>空调发出嗡嗡的闷响，汪执月看着岳蓝画着电磁场分析的右手，突然笑了出来。</p>
+                    <p>“怎么啦？”</p>
+                    <p>岳蓝伸手摸了摸汪执月的头。</p>
+                    <p>“没什么，就是突然觉得空调和外面的蝉一样吵，那空调是不是可以叫电子蝉品。”</p>
+                    <p>“噗。”</p>
+                    <p>汪执月老是有一些稀奇古怪的想法，不过就算是这种无聊的冷笑话岳蓝也会打心底里的觉得有趣。</p>
+
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">岳蓝不喜欢特别刺眼的阳光，于是把窗帘拉了起来，就留了一条缝。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">被布料捂住的光线从缝隙里悄悄爬进了房间，它们像是岳蓝具象的手，轻轻攀上汪执月的双脚，在阳光里漂浮的尘跳动着，生疏地把少年青涩骨感的趾节勾勒了出来。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">汪执月身上的每一个细节岳蓝都看不够，眼前的人身上莫名带有一种尘封已久的熟悉感，这让岳蓝感觉每一个瞬间都像是一场梦里的重逢。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">岳蓝甩了甩头试图把自己这种奇怪的想法甩出自己的脑袋，但是被汪执月伸手制止了。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">额头传来的温度安抚着岳蓝，他情不自禁的握住汪执月的手腕，用脸蹭了蹭汪执月的掌心。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">温热，没有任何茧子的掌心。</strong></p>
+
+                    <p>“你还真是像秋天一样的存在。”汪执月笑道。</p>
+                    <p>“看起来冷冷的，但是内心其实是色彩缤纷的大丰收吗？”话音刚落，岳蓝突然就接了这句话。</p>
+                    <p>“诶？你怎么知道我想说什么。”汪执月有些讶异。</p>
+                    <p>“不知道，我就是感觉你好像要这么说。”</p>
+                    <p>“我总觉得月月你是夏天，漂亮又热烈，和我有着别人没有的亲密，但是我有些害怕。”</p>
+                    <p>“如果夏天教会秋天属于自己的意义，那夏天是不是就要走了？”</p>
+                    <p>一滴眼泪倏地从岳蓝眼角滑落，碎在了房间的木地板上。</p>
+                    <p>“啪嗒。”</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">夏天除了凌晨三点都是吵人的。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">每一粒颜色都因为气温升高膨胀，把饱和度拉到最高，从眼底就刺激着汗腺的感知。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">日出，正午，日落，夜幕。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">在云卷走每一分色彩把自己漾出不同色块的天边，总是有一群不知往哪里飞去的鸟。</strong></p>
+                    <p><strong style="color: #6b4c9a; background: #f3e9ff; padding: 2px 4px; border-radius: 4px;">它们会被天的浪花打成红色，黄色，蓝色，载着少年心事往没有终点的未来飞去，直到少年行至暮年，斑驳的喜怒哀乐把它们都染成了乌鸦，对人间最后一次发出一声来自过去的叫嚣。</strong></p>
+
+                    <p>岳蓝把手机屏幕按灭，在暖黄的床头灯下打开了《银河铁道之夜》，这是汪执月送给自己的生日礼物。</p>
+                    <p>“真正的幸福...吗？”</p>
+                    <p>岳蓝手指捏着书页的右下角轻轻捻动，在纸上留下了不明显的褶皱，顺势把这一页的书角折了起来。</p>
+                    <p>回到过去可能，不，应该说绝对是幸福的。</p>
+                    <p>毕竟在不懂事的年纪，和心爱的人哪怕只是静静地待在一起都是幸福的吧。</p>
+                    <p>自己的心思一向是简单又好猜的，就算自己摸不清楚的时候只要汪执月随意分析两句就能弄明白。</p>
+                    <p>但是岳蓝想不通，这每一天的违和感从何而来，如果自己真的只是被一时的幸福冲昏了头就好了。</p>
+                    <p>“你觉得幸福是什么？”</p>
+                    <p>化学课上汪执月打开岳蓝递过来的纸条，映入眼帘的便是这句话。</p>
+                    <p>“这个要分等级才好说吧~”</p>
+                    <p>“等级？”</p>
+                    <p>“嗯。”</p>
+                    <p>“简单的幸福：和你一起回家，吃好吃的；中级的幸福：可以和你一起呆在一起好久好久；最高级别的幸福：可以和你不出意外不生病，一起毕业工作然后把这辈子过完吧。”</p>
+                    <p>汪执月笑着偷偷瞥了一眼岳蓝，果不其然，和自己想象的一样，岳蓝的耳朵都红得能滴出血来。</p>
+                    <p>“写太多了吧...纸条都没空间了。”</p>
+                    <p>岳蓝偷偷把上一张纸条小心翼翼叠好放进了自己书包的夹层里，又换了一张新的递过来。</p>
+                    <p>大个子的坏处就是这种小动作看起来也是明显得不得了，全都被汪执月看在了眼里。</p>
+                    <p>“说起来，要不要一起去看烟花？”</p>
+                    <p>“嗯？哪儿有？”</p>
+                    <p>“这个周末，隔壁市。”</p>
+                    <p>“好啊。”</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>俩人选了周五晚上的火车，坐到临市只需要不到一个小时，还可以去吃点临市的特色当晚餐。</p>
+                    <p>“吃什么呢？一会儿？”</p>
+                    <p>汪执月翻着手机，找了一家评分还不错的特色菜。</p>
+                    <p>“我们一会儿去这儿吃吧？”</p>
+                    <p>汪执月把手机递到岳蓝面前，岳蓝正盯着外面模糊在夜色里快速倒退着的光景发呆。</p>
+                    <p>“啊，好的，就去这儿吧。”</p>
+                    <p>岳蓝扯出一个不自然的微笑，始终没敢看向汪执月的脸。</p>
+                    <p>“你到底怎么了？”</p>
+                    <p>汪执月伸手把岳蓝的身体微微掰朝自己，试图强迫岳蓝看着自己。</p>
+                    <p>但是在这个瞬间岳蓝不知道是不是自己产生幻觉了，岳蓝身上的衣服突然变成了病号服，火车的轰鸣和呼啸声隔着窗户给了岳蓝一记凌冽的耳光。</p>
+                    <p>再抬头一看周围的乘客竟然全都消失不见了，车厢里的灯倏地暗了下去，爆炸似的把两人置于一片星河之中，这趟列车的终点好像改为了宇宙的边缘一般。</p>
+                    <p>岳蓝感到一阵心慌，借着和火车错过路灯灯光和车厢里的星光，岳蓝转过头仔细的端详起汪执月的脸。</p>
+                    <p>那张自己永远不会忘却的脸没有一丝变化，但是平白的像是蒙上了一层没有生气的灰色。</p>
+                    <p>这个念头出现在脑海里的一刹，岳蓝侧身伸手用力把汪执月揽进怀里，紧紧地圈起来。</p>
+                    <p>他不敢睁开眼看周围，只是闭着眼睛，大颗大颗的眼泪顺着脸颊滚下来，打湿了一小片汪执月的肩膀。</p>
+                    <p>“我不知道...该怎么和你说。”</p>
+                    <p>“最近的每一天，我都过得非常非常幸福，只是和你坐在一起我都感觉幸福，非要说的话甚至是你纸条上写的最高级别的幸福的程度。”</p>
+                    <p>“我好像产生了幻觉了，我好像分不清梦和现实了。”</p>
+                    <p>“明明就是普普通通的日常，但是对于我来说随时都伴随着强烈的既视感和违和感。”</p>
+                    <p>“明明我们每天都在一起，但是仅仅是这么说话我都感觉是一次很久远的重逢。”</p>
+                    <p>岳蓝抱着汪执月哭得抽抽搭搭的，含糊不清地自言自语着，这样的岳蓝，汪执月从来没有见过，但确实让人心疼不已。</p>
+                    <p>“没人能说的清我们看到的世界到底是现实和梦境，既然分不清，那就暂时先不用强迫自己分清。”</p>
+                    <p>“实话说，我也有这种感觉。”</p>
+                    <p>“和你在一起的每一分每一秒，都让我感到怀念。”</p>
+                    <p>汪执月把岳蓝的身体扶正，浅笑着和他对视，两人眼中映出的星系在这一刻无声的碰撞、融合，巨大的轰鸣声盖过了列车发出的声音。</p>
+                    <p>“啪嗒。”</p>
+                    <p>车厢内的灯光又一次亮了起来，乘客们没有任何异常，汪执月也恢复了正常的样子。</p>
+                    <p>“也好。”</p>
+                    <p>岳蓝在心里告诉自己。</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>人本质上来说就是一个又一个的容器，各个器官的功能不同也赋予了人这个容器不同的意义。</p>
+                    <p>好比以眼睛来说。</p>
+                    <p>因为眼睛的存在人类成为了一台像素超高的相机，焦距是根据眼前景色的重要程度调整的——越重要的人事物，绝对是清晰度和饱和度都最高的。</p>
+                    <p>和汪执月在一起的每一刻，对于岳蓝来说，都是在青春这本影集里最明艳的页面。</p>
+                    <p>烟花表演在晚上，但是从早上睁眼第一刻起岳蓝就没来由的觉得好像某件事在进入倒计时。</p>
+                    <p>“我又做梦了。”</p>
+                    <p>“倒不如说我宁愿那边是梦，梦都是反的吧，所以你现在就这么好好的躺在我的身边。”</p>
+                    <p>岳蓝已经分不清这是几月了，只觉得像是进入了永不结束的三伏天。</p>
+                    <p>轻轻拍了拍躺在身边的汪执月，岳蓝坐起身来，片刻后又弯下腰轻轻亲了亲身旁的人。</p>
+                    <p>“我总记得你要我早上刷了牙才准亲你来着？为什么会有这种感觉呢？”</p>
+                    <p>岳蓝一边嘟嘟囔囔一边站起身来去洗漱，汪执月悄悄裹紧了被子又换了个姿势把脸埋进枕头里。</p>
+                    <p>“哈——”</p>
+                    <p>听着洗手间里的动静，汪执月的睫毛颤了颤，最终他什么也没说，一直装睡到岳蓝出门买早餐回来。</p>
+                    <p>有些事最后再搞清楚就可以吧？</p>
+                    <p>就像拍立得拍出的照片，不管拍出来的效果怎么样，只要有那一段缓冲时间，美和丑不重要，模糊和清晰也不重要。</p>
+                    <p>重要的是，留下了痕迹存在过的证明。</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>岳蓝坐起身来，身体抑制不住的酸痛。</p>
+                    <p>“嗯...？”</p>
+                    <p>幻觉？</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>晚上六点，人们已经在自己选定的位置上坐了下来。</p>
+                    <p>岳蓝和汪执月也一样。</p>
+                    <p>“真好啊，这里。”</p>
+                    <p>“嗯。”</p>
+                    <p>晚风把树的枝丫和叶片撩动出让人心痒的声音，云层一点一点地把黑夜装填到海面上后也沙沙地散去了。</p>
+                    <p>“要开始了吧？”</p>
+                    <p>汪执月话音刚落，第一发烟花已经伴着空气里淡淡地火药味升空了。</p>
+                    <p>烟花盛开的样子，就像是悄悄种在岳蓝心里的种子生的根，茂盛，生命力十足，又填满了属于汪执月的颜色。</p>
+                    <p>贪恋这种东西，模糊了他的感官。</p>
+                    <p>在今晚的风已经让人感到一丝凉意的时候，他就应该意识到他在意的什么已经随着热气已经消散了。</p>
+                    <p>“我是不是太贪心了？”</p>
+                    <p>“为什么突然这么说？”</p>
+                    <p>岳蓝没有回答，只是站起身来，不明所以的汪执月也赶紧跟着起身。</p>
+                    <p>“怎么了？布鲁？”</p>
+                    <p>“分不清是真是假的时候，我觉得做点大胆的事也无妨。”</p>
+                    <p>说罢，岳蓝抬脚向着山顶的边缘跑去，敏捷的翻过栏杆纵身一跃。</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>“啊...头也好痛”</p>
+                    <p>岳蓝床头的日历已经许久没有翻过了，具体从什么时候呢？</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>“真想明年也能和你一起看烟花啊。”</p>
+                    <p>不断下坠地岳蓝朝离自己越来越近的汪执月伸出了手。</p>
+                    <p>两人十指相扣的瞬间，岳蓝顺势把汪执月拉向了自己紧紧地抱在了怀里。</p>
+                    <p>“谢谢你。”</p>
+                    <p>“但是怎么办才好呢？我的夏天在我没有反应过来的时候，已经结束了。”</p>
+                    <p>泪水在空中跟着最后，也是最盛大的一发烟花升了空。</p>
+                    <p>岳蓝最后一次亲吻了他朝思暮想的人。</p>
+
+                    <div style="text-align: center; margin: 20px 0; color: #ccc;">-</div>
+
+                    <p>岳蓝从床上下来，顺手把乱丢的衣服捡起挂在了衣架上。</p>
+                    <p>又想起了什么似的，走到厨房把洗碗槽里烧了一半的东西捡了起来。</p>
+                    <p>那是汪执月的病历本，里面满满当当的都是他得脑胶质瘤后的治疗记录。</p>
+                    <p>想了想，岳蓝叹了口气，挠了挠自己蓬乱的头发，再郑重其事地把残留的病历放到了床头柜里，和那本《银河铁道之夜》一起。</p>
+                    <p>“这页什么时候被折进去的啊？”</p>
+                    <p>书里某页出现了蛮新的折痕，可能是自己昨晚半梦半醒间翻了折的吧，毕竟汪执月不在了后每一天自己都过得浑浑噩噩的。</p>
+                    <p>昨天是他离开的第七天，按照习俗逼着自己睡了个早，没想到就做了那么长的梦中梦。</p>
+                    <p>岳蓝活动了一下因为睡太久而有些僵硬的身子，抬手把床头的日历翻到了对应今天的日子。</p>
+                    <p>“嗯？居然已经立秋了啊——”</p>
+					<br>
+					<br>
+					<h3>广播剧：</h3>
+					<p>五部广播剧均为<strong>本人原作短篇小说</strong>改编，全程参与跟进<strong>剧本改编，角色选择，后期宣发工作</strong>，现全平台免费收听，在此仅贴猫耳平台链接展示，排序按照人气从高到低进行。</p>
+					<p><a href="https://www.missevan.com/mdrama/38962" target="_blank">把英年早逝当成愿望 - 猫耳FM</a>&nbsp;&nbsp;(※本篇在抖音和快手因营销号自发搬运也有较高人气)</p>
+					<p><a href="https://www.missevan.com/mdrama/31510" target="_blank">直球击倒小傲娇 - 猫耳FM</a></p>
+					<p><a href="https://www.missevan.com/mdrama/40179" target="_blank">山烟熠熠何时归 - 猫耳FM</a>&nbsp;&nbsp;(※本篇主役由知名CV小随担任，代表作品：《一拜天地》)</p>
+					<p><a href="https://www.missevan.com/mdrama/62686" target="_blank">烧 - 猫耳FM</a></p>
+					<p><a href="https://www.missevan.com/mdrama/70145" target="_blank">Bye - 猫耳FM</a></p>
+				
+				`
+            },
+			'copy2': {
+                category: '文案作品',
+                title: '游戏宣发文稿',
+                meta: '类型：悬疑 / 剧情 / 青春',
+                content: `
+					<p>大学期间参与TAPTAP写手计划参与游戏宣发文案的撰写：</p>
+					<p><strong>AVG《露西她所期望的一切》QA帖</strong></p>
+					<p>原版只是普通的QA帖，以AI露西的视角改写了！</p>
+					<p><a href="https://www.taptap.com/topic/18126850">【QA合集】机器人PIM-001使用说明书请查收！</a></p>
+					<br>
+					<br>
+					<p><strong>AVG《露西她所期望的一切》上线帖</strong></p>
+					<p>原版只是普通的上线帖，以AI露西的视角改写了！</p>
+					<p><a href="https://www.taptap.com/topic/18126914">【已开奖】露西正式启动！还给大家带了好多礼物~</a></p>
+					<br>
+					<br>
+					<p><strong>AVG《露西她所期望的一切》定档帖</strong></p>
+					<p>同上</p>
+					<p><a href="https://www.taptap.cn/moment/133894863174239720">【5月19日正式上线！还有露西想告诉你的一切</a></p>
+					<br>
+					<br>
+					<p><strong>AVG《宅男的人间冒险》版号延期发售帖</strong></p>
+					<p>加了一些二次元要素</p>
+					<p><a href="https://www.taptap.com/topic/19887438">救命，少年可能暂时来不了人间了！</a></p>
+					<br>
+					<br>
+					<p><strong>RPG《进化之地2》商店页文案</strong></p>
+					<p>首页推荐语：
+						边玩边进化！来一场穿越游戏史的时空冒险吧！
+						简介：
+						边玩边进化！一起开启穿越游戏史的热血冒险吧！
+						跟随主角库洛的脚步，自由穿梭于4个时代，寻找阻止“大灾变”的方法，拯救这片大陆。请注意，这场连续时空混乱可能会出现以下事件：
+						【停不下来的玩法跳跃】
+						从RPG到横版格斗，从卡牌对局到飞机大战，在混乱的时空中，挑战来自不同时代的数十种经典玩法。
+						【瞬息万变的画风切换】
+						从2D到3D，从像素到立体，每个时代都有自己的专属画风。不要惊慌，只是时空穿越带来的微小副作用罢了。
+						【扑朔迷离的剧情展开】
+						长达20小时的冒险之旅，谜团重重的穿越剧情。意外卷入了连续时空混乱事件的主角，在各个时代中妄图追寻的线索，似乎只是“另一个自己”留下的痕迹......
+						【新异象： ⎕ 】
+						新异象“ ⎕ ”推出！ ⎕  ⎕  ⎕  ⎕  ⎕  ⎕ ，刷新自己的操作极限！
+						开发者的话：
+						欢迎游玩《进化之地2》！为了让各位能更畅快享受这场穿越游戏史的热血冒险，除了对 ⎕ ⎕  ⎕  进行了大量优化之外，我们还开发了全新的模式，你可以 ⎕ ⎕  ⎕  ！欢迎各路冒险者前来挑战~</p>
+						
+						
+				`
+            },
+			'copy3': {
+                category: '文案作品',
+                title: '杂文及随笔',
+                meta: '类型：生活感悟 / 散文 / 随笔',
+                content: `
+                    <p style="font-style: italic; color: #666; margin-bottom: 30px;">比起整篇故事的撰写，我更多的是进行碎片化的写作，当下一闪而过的灵感和情绪是我更爱的表达方式。</p>
+
+                    <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                    <h4 style="font-size: 1.5rem; margin-bottom: 20px;">随笔一则</h4>
+                    <p>春天在我眼里本来应该是绿油油的，其实应该说南方的一年四季都是我能从地上捡起来的一片清脆。被水汽溺着的植物好像永远都不会枯黄，也就天气晴朗的日子里，傍晚时，昼夜和生死交叉的时候，它们才能沾光染上一点点似橙的黄昏。</p>
+                    <p>我一直都喜欢我家老房子的窗户里看出去的夜空，比其他地方和时间的都要清朗些。云经常就往月亮遮，月亮形状不太好看的夜晚这样一遮，反倒能更仔细去在意一下星星是怎么闪的。</p>
+                    <p>天上的云啊，被夜晚的风轻轻卷一卷，就跟着地上哗哗刮过的护城河一起飘走了。我和星星们面面相觑，安静的旁观者还有窗户外的我家那挂了不少灰和锈的空调外机，我家向来不爱开空调，空调风是死的，闷。</p>
+                    <p>我很乐意猜测你能看到的东西，大概会是你趿拉着拖鞋或是赤脚，星河穿过你脚趾缝的凉，不过我约莫是无论怎么都感知不到那份属于你一个人的窃喜的吧。</p>
+                    <p>希望有一天，你能带我体验这种活灵活现的清澈，通过你浅浅的一个吻，作为交换，我也会告诉你我能摸到的黄昏，是藏在我眼底的温暖，你亲自来看。</p>
+
+                    <hr style="margin: 40px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                    <h4 style="font-size: 1.5rem; margin-bottom: 20px;">《关于雨》</h4>
+                    
+                    <div style=" margin-bottom: 20px;">-</div>
+
+                    <p>我们把大自然水循环里降水的一环称为雨。</p>
+                    <p>我们也把轰然而下的眼泪称为雨。</p>
+
+                    <div style=" margin: 20px 0;">-</div>
+
+                    <p>雨是一种奇妙，本身就是一种奇妙，它能带来生机，能造成死亡，能晕染悲切，能构成轰烈。</p>
+                    <p>仅仅用水滴的自然落体就可以。</p>
+                    <p>一种奇妙。</p>
+
+                    <div style=" margin: 20px 0;">-</div>
+
+                    <p>雨的重量得看当天的心情才能决定。</p>
+                    <p>说不定是没有声音一点一点沉下来的丝，也说不定是经过加速度后致命的金属珠子。</p>
+                    <p>啪！</p>
+                    <p>的一下被打碎。</p>
+
+                    <div style="margin: 20px 0;">-</div>
+
+                    <p>恐惧会随着雨在砸在地上抽搐着的呻吟而一下子升腾起来。</p>
+                    <p>同样的，哀伤和悲寂是藏在水滴里的种子，在这样的日子里迅速的潜入地生根发芽。</p>
+                    <p>最后变成痛苦的藤蔓。</p>
+                    <p>人们吊死在上面。</p>
+                    <p>失禁了。</p>
+
+                    <div style="margin: 20px 0;">-</div>
+
+                    <p>雨。</p>
+                    <p>过了之后。</p>
+                    <p>阳光的光线也是雨。</p>
+                    <p>我们也被淋湿了，被阳光。</p>
+                    <p>区别是阳光的不声不响。</p>
+
+                    <div style="margin: 20px 0;">-</div>
+
+                    <p>哗啦啦啦。</p>
+
+                    <hr style="margin: 40px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                    <h4 style="font-size: 1.5rem;margin-bottom: 20px;">《关于往生这件事》</h4>
+
+                    <p>一个人的死亡我们会用别的比如往生，去世，走了，这类似的词语包装起来以掩盖住心里某一块地方的崩塌之后，再用看起来比较平静的情绪去宣告这个人今后的状态。</p>
+                    <p>这件事是很值得每个人去探讨的，并不是说健康的人年轻的人就不会懂得这件事的深度和意义在哪里，至于人们大都闭口不谈，大部分原因是抱着一种恐惧，厌恶的心态的关系，与失去的悲痛随之而来的还有所谓的不吉利，晦气这类似的说法。</p>
+                    <p>我也不喜欢这件事所带来的影响，不过对于我来说似乎每一个阶段看待这件事的都是用不同的心态和想法。</p>
+                    <p>小学的六年时间里，我跟着家里人送走了曾祖母，曾祖父，二舅，还有一些街坊邻居，家里人的朋友的家属。那时候的我反感这件事的理由其实是和我们当地的风俗有关。</p>
+                    <p>白事办的酒席一般会有七天，酒席上会用酥肉，白菜，粉丝，胡萝卜，白萝卜，炸豆腐这几个菜煮成一大锅之后用盆装上桌，每一桌有几个蘸水碟蘸着吃。基本天天都是这个菜重复，说实话是不好吃的，小孩子挑食，所以往生这种事当时在我的心里是和不好吃的菜联系在一起的。</p>
+                    <p>现在回想一下，那时候我脑海里提到死亡这个词的画面里就是头上包着孝帕的逝者的亲人和来送行的人群人头攒动的样子，屋子外飘着白色的布条，道士先生做法事的灵堂，用音响或者喇叭放的哀乐，民间来表演的吹唢呐的人，一盆不好吃的菜，还有或真或假的哭声。</p>
+                    <p>我外公退休之后就买了一个摄像机，四处帮人拍摄葬礼流程赚点外快，那时候他一出去就是一个周，回来之后用两三天时间刻光盘，然后和我还有外婆聊一些葬礼上的所见所闻。我总记得客人们来取光碟的时候，脸上多多少少的悲伤的情绪，外公收了钱送人出门的时候会再说一句节哀的模样。</p>
+                    <p>中学七年，我和父母的接触多了一些，由于父母的职业的关系，爸爸是交警妈妈是做保险行业，我们家的饭桌话题经常和他们两个的职场有关系。比如说爸爸今天处理了一个事故，走了几个人，妈妈公司里今天理赔部理赔了几个案子，走了几个人。</p>
+                    <p>死亡这件事，在当时我的眼里就变成机械的黑白数字。</p>
+                    <p>我还记得爸爸处理过最严重的一次事故，我记得很清楚，是当场死亡十四个人的大事故，他那几天都不怎么在家，在家的时候也都是一脸疲态，死亡这件事波及到的人们都会很压抑。</p>
+                    <p>提一嘴别的，我这个人记性不错，我现在还能数我记得的一些已经走了的人们，我爷爷，曾祖母，曾祖父，大姑父，对面邻居家我得叫祖祖的男性老人，小巷子里总是在做家事的短发胖婆婆，后面巷子里自杀了的敖医生，马路对面家酒精中毒去世的大叔，外婆在理疗店认识的总是打胰岛素的胖婆婆，这些人至今还在我的记忆里鲜活的嬉笑怒骂，总在不经意间想起来他们曾经在我生命里留下的某个节点。</p>
+                    <p>敖医生是在我生命里第一个自己选择结束生命的人，我记得是查出患了大肠癌不想拖累儿女自己喝了农药。敖医生人挺好，当了很多年的中医，住在我家后面一点，小时候外公总爱去他家玩，下棋，看电视，聊天什么的。那时候得知他的消息的时候我还有些许的震撼，因为在当时我的心里死亡这件事是由上天决定的，万事万物都有自己的命数，但是这样直接的冲击告诉我，生命的结束往往是握在自己手里的。</p>
+                    <p>我曾经也有两次这样的想法和行动，刀也拿在手里过，也爬上过跳下去必死的窗台。多半是我怂也怕疼，那天晚上的星星比较多，这类似的理由让我放弃了，不过对于别人我有类似的想法，我只会以尊重的态度去看待。如果说他们的人生非得到这一步了才可以真正的轻松的话，似乎我们也没有什么别的可以和他们说了。</p>
+                    <p>最近连着出了三位自杀的还有意外身亡的艺人。他们的影响力都不小。他们生命的终结对我的打击有些沉重，怎么说呢，这几个艺人也就像我上面提到的我身边的人一样，在我的生命里是留下了很多值得回忆的节点的，他们的逝去也就代表着我的有着他们存在的那一部分生命也真正的消散了，怀念就是再次痛苦。不管是名人还是身边的人离去，对于我们全体，整个宇宙来说，都是一个周期的终结。</p>
+                    <p>总觉得名人的离去会更寂寥，好评恶评会像退潮一下轰然散去，代替的是铺天盖地新闻报道，粉丝和家人的痛苦，陌路人跟风的叹息。等新闻过了，人们会连带着自己塞进裤兜里忘记吃掉的巧克力一起把他们遗忘。</p>
+                    <p>就像大风扫过，声势浩大，但什么都看不见。</p>
+                    <p>众生平等，不是说给正跟着世界旋转的人们听的。</p>
+                    <p>是说最后一刻的人们听的。</p>
+					
+					<hr style="margin: 40px 0; border: 0; border-top: 1px dashed #ccc;">
+					
+					<img src="images/sb1.webp" />
+					<img src="images/sb2.webp" />
+					<img src="images/sb3.webp" />
+					<img src="images/sb4.webp" />
+					<img src="images/sb5.webp" />
+					<img src="images/sb6.webp" />
+					<img src="images/sb7.webp" />
+                `
+            },
+			'copy4': {
+                category: '文案作品',
+                title: '音乐填词',
+                meta: '类型：流行 / 日系 / 翻填',
+                content: `
+                    <p style="color: #666; margin-bottom: 20px;">注：两首填词均为早期在一款虚拟歌姬 APP 上的创作，因平台停运已无直接试听链接，故附上原曲链接以便对照收听。</p>
+
+                    <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                    <h4 style="font-size: 1.3rem; margin-bottom: 10px;">01. Aimer —— カタオモイ（单相思）</h4>
+                    <p style="margin-bottom: 20px;"><a href="https://www.bilibili.com/video/BV16K4y1s7vX/?spm_id_from=333.337.search-card.all.click&vd_source=87f47954377b365f6d15a00f97872767" target="_blank" style="color: #6b4c9a; text-decoration: underline;">🎧 点击试听原曲</a></p>
+
+                    <div style="background: #fff; border-left: 4px solid #6b4c9a; padding-left: 15px; margin-bottom: 20px;">
+                        <p>洒脱些吧 对于我<br>想把你 藏进话里<br>用听觉来触摸<br>在你发梢的晚霞</p>
+                        <p>给盛夏 来临前<br>造势的阴雨 也和我一样<br>没说出口没关系<br>包裹的忧郁 你用热烈来赶走</p>
+                        <p>打开生锈的锁 都在这里<br>多少的春意 缠着未来<br>手里写着<br>比风离开还遗憾的日记 捂不住在盛开的花</p>
+                        <p>回暖世界里 连海也寂寞<br>重染上绿的树<br>问着云 和他再见面的谁<br>还要多久<br>还要多久</p>
+                        <p>Darling有没有 也想起过<br>一起倒数着 冷暖变化时差的时候<br>Darling在听吗 我那么多<br>单向的在乎</p>
+                        <p style="color: #ccc;">———</p>
+                        <p>她说 你回来过<br>他说 别又错过<br>说得都对<br>可斑斓的自卑 擦去了痕迹还有</p>
+                        <p>把吉他 音准调对<br>我心里 纠结发酵的旋律<br>唱往了你的天空<br>压住我的胸口 全部 会懦弱的后悔</p>
+                        <p>可有可无 和我<br>一起那些日子里 已不再清晰<br>你能猜猜日子多久<br>能把街头巷口 我的喜欢 腌渍到不朽</p>
+                        <p>过去就 算是意外<br>脸红紧张颤抖 模糊暧昧的融洽<br>输赢向来<br>没有理由<br>没有理由</p>
+                        <p>呐 Darling 有时候 我曾想过<br>别朵写满喜欢的迎春花 在你胸口<br>Darling 有道痂 总提醒我<br>你的美好是 无拘无束</p>
+                        <p style="color: #ccc;">———</p>
+                        <p>启程吧 忘了我<br>跨过是非 别怕结果<br>稍后 别再回头<br>我也会尽快出发</p>
+                        <p>不需要 再哭泣<br>没必要 再可惜<br>下一次再见时 的对白<br>就放轻松一点吧</p>
+                        <p>这喧闹繁杂的 剧情被我<br>折叠进纸飞机 在蔚蓝穿梭<br>时间够的话<br>或许你 能看到在枝头</p>
+                        <p>它可能 自说自话 告诉你那很久<br>以前的心意 我的感受<br>我的害羞<br>我的借口<br>我的温柔</p>
+                        <p>Darling奔跑吧 追逐自由<br>你是远走的浪花 苏醒在初暖以后<br>Darling 我会沉睡在柳荫下<br>Darling 祝愿你 幸福</p>
+                    </div>
+
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; font-size: 0.95rem; color: #555;">
+                        <strong>📝 创作随笔：</strong><br>
+                        原曲旋律清新带有些许的遗憾。填词灵感来自于季节交替，“我”是春天，“你”是夏天，“我们”亲密，“我们”过渡，“我们”交融，但我们不可能永远在一起，那一段短暂的“并肩”则是单相思中最珍贵但是也最悲伤的温度。
+                    </div>
+
+                    <hr style="margin: 40px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                    <h4 style="font-size: 1.3rem; margin-bottom: 10px;">02. YOASOBI —— 夜に駆ける（向夜晚奔去）</h4>
+                    <p style="margin-bottom: 20px;"><a href="https://www.bilibili.com/video/BV1de4y1S73F/?spm_id_from=333.337.search-card.all.click" target="_blank" style="color: #6b4c9a; text-decoration: underline;">🎧 点击试听原曲</a></p>
+
+                    <div style="background: #fff; border-left: 4px solid #6b4c9a; padding-left: 15px; margin-bottom: 20px;">
+                        <p>熄灭月光的你 躲藏进暗淡灯火里<br>互相擦掉泪后 说着和我往黎明去的你<br>那再见吧 你的回答</p>
+                        <p>昨夜装作星星的虛假车水马龙下<br>夕阳深深 颠倒进你的瞳孔 点燃了晚霞<br>凉意在被制住的沉默之中爆发<br>卡住了动弹 不得的话</p>
+                        <p>在出发之前就已经在空气里嘶哑<br>请暂时像还有阳光时那样 陪在我身旁吧<br>就算是你顾左右 而言他</p>
+                        <p>夜从未 像这么长过<br>话里的安慰 辨不出真假<br>哭出来反正不会<br>更好的话不如还是放弃</p>
+                        <p>无意在重复 但还是期待的我<br>踏不碎的全部遗憾 带上朝风向往最终点追赶的那条路</p>
+                        <p>擦去了昨天的你 把黑夜泼入未来里<br>谎言之间却依然真实 温热你的双手<br>失控了的怀疑 模糊就在面前的你<br>我想再看一次你的双眼啊</p>
+                        <p>坠进宇宙 无法反悔 你所及一切仅剩我<br>名为两个人的孤单 把你我痕迹蒸发<br>告诉我有没有 做好朝今夜狂奔 的准备<br>再也不会放开我</p>
+                        <p style="color: #ccc;">———</p>
+                        <p>紧闭的大门已敞开<br>把厌倦的日常 打包成无用的牵挂<br>你拖着 沉重的承受走在我 前面一言不发<br>用风声代替 所有的话</p>
+                        <p>心脏砰砰地跳动和呼吸差不多<br>索性直接冲向必然的结果<br>多少代价用自由支付说给就给 请你再等一下就能 看到我</p>
+                        <p>再聚散的烟火<br>我不会再闪躲 就算没有如果<br>惩罚我到底需要离别多久才够</p>
+                        <p style="color: #ccc;">———</p>
+                        <p>我现在似乎感觉到一丝疲惫<br>大声呐喊也听不到 回应<br>你坚定的背影 却很无助</p>
+                        <p>也许<br>我应该质疑自己的认为对不对<br>或是思考怎样 应付重逢时的尴尬<br>啊 我们所想其实都不多<br>被别人看成冲动的犯傻</p>
+                        <p>你想要先离开 我只是不想再退缩 这才叫作活该<br>夸张的大笑不让泪落下此刻感受着 迅速失重的身体<br>你当时看的 风景原来如此啊</p>
+                        <p>终于回头了的你 我又可以再次拥抱你<br>波澜不惊已久的情绪 又在眼眶喷发<br>那刺耳鸣笛 不再像 那日一般寂寞<br>红色的云层 被夜慢慢抹去 哈啊</p>
+                        <p>啊~~</p>
+                        <p>夏的炎热又重启 在一场场大雨之后<br>你感受下落的疼痛 只有我用心解读<br>希望看到我能 晒着阳光往前的你<br>我的压抑难耐 挣扎着暴露</p>
+                        <p>打破隔阂无奈微笑着 又向我伸出手的你<br>傻笑回握绝不再松开的我 有些生疏<br>祈祷着今夜 能快些散去</p>
+                        <p>黎明已经染开<br>让人鼻酸的日出<br>呼啸而过 来自于你眼底的温柔<br>不知为何我的眼泪<br>又已夺眶而出</p>
+                    </div>
+
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; font-size: 0.95rem; color: #555;">
+                        <strong>📝 创作随笔：</strong><br>
+                        本篇歌词更多的是为了贴合原 pv 想表达的“殉情”的故事，所以对于自我的表达相对少了一些。第一大段为先自杀的爱人视角，第二大段则是“我”追随殉情的故事，最后在死后的世界二人重逢。
+                    </div>
+                `
+            },
+            'other1': {
+                category: '作品集',
+                title: '摄影作品',
+                meta: '手机摄影',
+                content: `
+					<p>目前都是手机摄影为主，后期软件主用醒图，因软件内存限制问题，请点击以下链接观看：</p>
+					<p><a href="http://m.qpic.cn/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*STKO41ypJbLi7PfXJBvNR6JCM.kyGrkaUbYaiyf38b54**RzbLMFYe5x2iOYMcgUC7t2jtMD4lNiFmIW1tvIZ3I!/b&bo=PwZVCD8GVQgBJwA!&rf=viewer_4" target="_blank">🔗摄影作品1</a></p>
+					<p><a href="http://m.qpic.cn/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*SRCD7uoVocVTmLTgbd.u4TmHYH0u3Qt0*I7PPr5YFfI1qgoVAAWRMDYJl8qJHOYC4WPJ8B*o2BW9M*EWZre.1Ms!/b&bo=QAZABkAGQAYBByA!&rf=viewer_4" target="_blank">🔗摄影作品2</a></p>
+					<p><a href="http://m.qpic.cn/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*SclR09w741fOYfZ70cd9uwmhMc10x8cfpdrqdt9btihBD62A8jzYfVcSow8ad9nN4.BEs6yIMoN97ROpJJPoN5Q!/b&bo=PwZVCD8GVQgDByI!&rf=viewer_4" target="_blank">🔗摄影作品3</a></p>
+					<p><a href="http://m.qpic.cn/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*STX4oX7YOrZf8UCUAwdEYyb1nSPL3ibVMYEbCcJOcmF28veYcaTlkEa*XsT8I4dJ7dFd8mrxR*FL8FlOgSxs2Fo!/b&bo=QAZdCEAGXQgBNxA!&rf=viewer_4" target="_blank">🔗摄影作品4</a></p>
+					<p><a href="http://m.qpic.cn/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*Sbj8uwOoFXLEiwpdK5NCoHtbHx*ZN5b87P9nmkVtGnjg.7MgpJ2u6ASXpn7OTw0wLeVHz2o6dA5EBM0bzSe4DBc!/b&bo=PwZVCD8GVQgBFzA!&rf=viewer_4" target="_blank">🔗摄影作品5</a></p>
+					<p><a href="http://photonjmaz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*SYooEdyCaETeMRpKKJAfYWQ7KFGq3.ApVtG0DwwTVq99BtEHiHayESii9qXfMZ5Hx83t.dTklIyovsX76xW8vfQ!/b&bo=PwZVCD8GVQgBFzA!&rf=viewer_4" target="_blank">🔗摄影作品6</a></p>
+					<p><a href="http://photonjmaz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/LiySpxowE0yeWXwBdXN*SQLJgTGjZWFbUCH0m94GIcU87v4arvCg2vF1SLTwAuJTYNtlxTZx93KvGkb5uhrRHX3iIng1ZXQaHyvBr.JM8Y8!/b&bo=QAZABkAGQAYBByA!&rf=viewer_4" target="_blank">🔗摄影作品7</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqXFSVNStL.OrBZA2fyzMOPEPRLIZGs0dg0RBGZTb8muglJE726.UxHhBf9Ia4W0civi046d1nZCKrw0kLI*z9DM!/b&bo=QAZ4CEAGeAgBByA!&rf=viewer_4" target="_blank">🔗摄影作品8</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqVURmmbimypR0Jlej9FjyL3JzU4aMDYH17E4xQ4mvxgHhf8pAkWNEc4ZOSxWeBalPUEdXT0qq5XeDDb5BP1.4BI!/b&bo=PwZVCD8GVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品9</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqSSuDDJmjg*M7ODr3ffp4qWEwqPzaQKVBgXgAocSNfQ9JNcISmYhREiFoZMfAf9N.sh7H19pWwrKmpCNfm0lrAg!/b&bo=PwZVCD8GVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品10</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqXUD5VhuV9E.XMobKLzZS*AwAG4oxg5o.1ahIBXSLm71aE.RImojsqN4tKnRpHsgxVTNuw7UXQ3XEv.pofHGKiM!/b&bo=QAZVCEAGVQgDByI!&rf=viewer_4" target="_blank">🔗摄影作品11</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqb0EuAN*AU5iknPdbNTwvo4zYgGW3vYTQrmphRlp0cJNrdmRZp7iz4LDwFHzZ4md2ANvhP1kAOUx2.g1tzPsrh8!/b&bo=WAhABlgIQAYBByA!&rf=viewer_4" target="_blank">🔗摄影作品12</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqa8A7icmahhytZWDMBFTGM7473mos9Pf5yCtuDoMskgzSMXZ4TRPADzyjp7.Xz3bMKxygt7C5nmT22AR1JaaIQk!/b&bo=QAZVCkAGVQoBByA!&rf=viewer_4" target="_blank">🔗摄影作品13</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqUBsaSpfQNhyoUEaXBdLe43qh4YDZgl6Pbq8zwVL5o4xtzvJVRYBxuy1KWbhshhpiV7.DaV9jQwF.eZY0Wbp5RI!/b&bo=PwZVCD8GVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品14</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqYxdQLrV7WtSGOwaDM6Qrxfy4*mmbMhRP0qzknsh9bRbPxsNWRK67pFN6TByJcZ7Ifg2dKY.U86Rdx21bAXu188!/b&bo=QAZVCEAGVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品15</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqd2elApDqlIa9DZHlnhFcSa6tOUb.1Vp4RGhv9uBsLTpTAnWto9*JWYRT*YXb.ThMW6UPGDrfhXGrjWnakfq6nI!/b&bo=QAaPCEAGjwgBByA!&rf=viewer_4" target="_blank">🔗摄影作品16</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqQgoVJJm6jkVWqqJbGx9qgRVvNe0WBGaeRvpAsm*VrfeNpiAwPsx4tFPgy4LCymUdLHkQh28tg9jZ3764nG5tkY!/b&bo=BQW8BQUFvAUBByA!&rf=viewer_4" target="_blank">🔗摄影作品17</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqVzi6fSR4yQ1cIS*CchvQsMOpH3BBJBgaVWZu4jqkYMh5h4iXoFQMmz2v8vprNaZSDzY6OYr5DGlBej4.zJ2Elk!/b&bo=QAZYCEAGWAgBByA!&rf=viewer_4" target="_blank">🔗摄影作品18</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqTXUYo7s3RoMky42S0e5pBq2nx9j8ak.ZLVPepGwfayWGBUh3o3kynr.hJvd7tJvOa.Oud8HBAuBuRhSe0bCZFU!/b&bo=QAbmCEAG5ggBByA!&rf=viewer_4" target="_blank">🔗摄影作品19</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqfXCombplRqjZ2J6ro4CqImJRmUe3bbhU4y65KspcM8J4phEtXracjQuTO09Mzo0ygjaagB5YrGV*QCBmrOTPlM!/b&bo=PwZVCD8GVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品20</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqTrvvu4SOpfh2JZm3dJ8xfmLafg16YbSKUbZwR3SGARdheak6QksSLhaCuvP83TSTxGIjZarzJp8TXdxBEbyUrY!/b&bo=QAbTBkAG0wYBByA!&rf=viewer_4" target="_blank">🔗摄影作品21</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqT3uROBDtdWMu*qegkF4PE2O79k*znyIj2YFAus28XJXFy2wP6eiQjb7rhVle3E0.SiGoZo2kowZMtaLSbBX1WA!/b&bo=HwhABh8IQAYBByA!&rf=viewer_4" target="_blank">🔗摄影作品22</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqeUDQmBLTV0FFCfw0iOdYVDCyushsKSH5sA*wcjkKodzRJzLmCD9*75CSm5uF2sb4plY17c5Vrp96RKvGSNdhhQ!/b&bo=QAZZCEAGWQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品23</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqfa9lr4QiGyL*nlRAciz9fc*nA3DSkxP3j5rIHDizTBuBVbZisYH5ZJkXtlvOiA*bp9Egyel*sDMnEHxc8guvOk!/b&bo=QAbxCEAG8QgBByA!&rf=viewer_4" target="_blank">🔗摄影作品24</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqWgJiPuBfm1IrOPD06scSlY*V36KRWW0KohggRLRAr65qwH78GukiTSqgs6T9godmb6S3ikLOylN1kPhraFMb5M!/b&bo=fAdbBXwHWwUDByI!&rf=viewer_4" target="_blank">🔗摄影作品25</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqSIftSR*D6BDgWKXom3P2cGIvhEou2dYujdbB0bt8.lywFINzXX8gTa6Kq5g48PFqdbVJhKyoTWlBzterG13XDg!/b&bo=gwhABoMIQAYDByI!&rf=viewer_4" target="_blank">🔗摄影作品26</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqUy0t3Py2C5GPx1HJRGRRPj3J9zDphvJhR3OCdkX7ovu.goZgE81bX2DEluZB.9tawpXwr.0X60gYkhMAbBtnck!/b&bo=QAZUCEAGVAgDByI!&rf=viewer_4" target="_blank">🔗摄影作品27</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqYm7.NB8g.4hPU6BOZhrOTrarcexrl30fEZwUG07tGY6ux9ZlDudtdeNdWCbekNzCLPkDmo5fb3GK3wKBzq341k!/b&bo=hgWGBYYFhgUBByA!&rf=viewer_4" target="_blank">🔗摄影作品28</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqa1*YOZJAH5TMLB4iA4MgzHoNSTXMHcQmaFz5cFboD0bQPinjU9RyzqbxDFsipGzlNoGIqKiCwPsbz4G7dzdeNU!/b&bo=QAZVCEAGVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品29</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqSmZYRRiQ*5Kma18OlFB9e3XFnVmoAZapHdOooo*XRtUNw5EXh7U8A8I7xq0iY2i71ehgSTtWGhnAqIUpxQz.2o!/b&bo=QAZVCEAGVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品30</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqTeGbgkjJxUjs6QpMakzPmbevytbe3SoCWnI8nKMTvLAHNU*FaWNs1KoTavgwuQRH.80gNq7ObRGLx.0PM*92mQ!/b&bo=QAZXCEAGVwgDByI!&rf=viewer_4" target="_blank">🔗摄影作品31</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqZ9VMLLF1utaLeXE2PcTO94bS11k3aFKHz8nou*W6erin*Lw06*Eje3Pl5R.cY3xi29GTrK0qzrTY1hwoj.d6EY!/b&bo=QAZVCEAGVQgBFzA!&rf=viewer_4" target="_blank">🔗摄影作品32</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqQyYLfpPqJXC1LenNGhZFRPetEHNKDlyybgaTnDu.IaJL6zmmTnn0Hif8.AM1gBESPKTtb6K1s6ROQKZ5b0BMgU!/b&bo=VQhABlUIQAYBByA!&rf=viewer_4" target="_blank">🔗摄影作品33</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqdgVhBmBgLZwrvQGWOHYPyXdPvP5G*uHUTPiHxQbCkqbS8k.MgvJKIwaz*ePe9D.7drc5xU2JqdOfVQ0RNbK0gs!/b&bo=QAYgB0AGIAcBFzA!&rf=viewer_4" target="_blank">🔗摄影作品34</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqRixHAvHVdwSlcKRRucrL03IvrD0xNWle6rehV8LTIZcj*P0g34fndT8jv*z.7q43mgDlaHpUmMdVUv3mi*meLo!/b&bo=QAZVCEAGVQgBByA!&rf=viewer_4" target="_blank">🔗摄影作品35</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqb3TtHctTkjle*rRBfM5*SfNMJ.pin1SXGvDc0tLJdiTWyJb1JfLdL0i5iMQM1LCh2nO2ZoYhA64Uv3aoTAmrAk!/b&bo=VQhABgAQAAwBGTk!&rf=viewer_4" target="_blank">🔗摄影作品36</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqWaghBDFVLih4qhhyDfqFFIBjIT7hakEliJBS2ErpeRWw0GZ94L2wa9CRCzdEmvKVYeYlWqgXt5AtiTwOpBBrLw!/b&bo=ZwU4BAAAAAABB34!&rf=viewer_4" target="_blank">🔗摄影作品37</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqSZYsEdzAykMkyKJreiaIGrP*IJBfHFnapvso.LJOqh95LzWWQooe8e.tyw0ae3fs5yvpBo*KXMJ5VBIOvB2zfg!/b&bo=VQhABgAQAAwBCSk!&rf=viewer_4" target="_blank">🔗摄影作品38</a></p>
+					<p><a href="http://phototj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqZrT6hOdaWyvcwB4tgHaT9e*oF9w7e3fhCmo2cRvI7cCQ8MsWRkjkVGTlEnRD3ewKbCSpSDFOLKGylUny8S17qQ!/b&bo=VQhABgAQAAwBCSk!&rf=viewer_4" target="_blank">🔗摄影作品39</a></p>
+					<p><a href="http://phototj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqRsLlCQUUXpw5FyoPlDYHF8g1NWOjQLQ0RDeHeY98J4BAE0w3YAMus2iPcFQiz3QRYFmo13X6S2LpqAua6M3068!/b&bo=VQhABgAQAAwBORk!&rf=viewer_4" target="_blank">🔗摄影作品40</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqdgq2SwV5PNskfI4iZOtFqi6xlQTlq3Qy*FNcmzG1OfB*1JfR0i0edubvm9qfM6cr114.7nAFRyck1XzyQecQNE!/b&bo=VQhABgAQAAwBCSk!&rf=viewer_4" target="_blank">🔗摄影作品41</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqXrvVWSCk53bCfBm*jYoca.E07XM7chNDpbLp2s9GgoEoCcGPAJlDCEtaKjhkFTmql*jE4P2C8rmNo4qeoqOrCA!/b&bo=VQhABgAQAAwBCSk!&rf=viewer_4" target="_blank">🔗摄影作品42</a></p>
+					<p><a href="http://phototj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqWZrg1WVf68LJUbhIA6rDIKowLawR5SbtDavJ8i980D8SIMzec4QIk0Ce28hVC*cYEzU7GENXtcFEXtS1i1mof4!/b&bo=VQhABgAQAAwBCSk!&rf=viewer_4" target="_blank">🔗摄影作品43</a></p>
+					<p><a href="http://phototj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqZu13iwitRMYUyBsN64ORHMRxMOUSkF8adVAIhnJ5FxJlJVAq*71Ex5uS02EJ7VAlPx7rkEPIanWLx7gEGc.tPc!/b&bo=CAhABmsPAAwBCQA!&rf=viewer_4" target="_blank">🔗摄影作品44</a></p>
+					<p><a href="http://phototj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqTCeC6A4HQfrr6kYPUjQeH80bjL.PoM*4kzpXIeuZPaPdrBHOs3Lti2wIgWgjhoIIXb5gSpcl4k9FS50WQsYL1w!/b&bo=lwhABgAQpAsBGVg!&rf=viewer_4" target="_blank">🔗摄影作品45</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqR.aZp6Nwir0xdywqxj4uQdYrO*q1XVlxbArwMG3IMZ0MHFGBKbkbO.Vaoy.idI5iESiOphkV0lGEcQau5IBCrc!/b&bo=VQhABkAOsAoBCcE!&rf=viewer_4" target="_blank">🔗摄影作品46</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqR1YTyYMERhjitlGeTPBbs71.j.7FM5pAuB*Dug0EHNGpW9qoSJQ8.CQA0epgLzl.f.z99ptJJbf4br2pXcyw3E!/b&bo=FAc2BBQHNgQBGT4!&rf=viewer_4" target="_blank">🔗摄影作品47</a></p>
+					<p><a href="http://phototj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqZS4TK0uNdEJOFYdEfRNGpNqljaHTMWPuNk0lX9PA2Hu7NGEhyoPJDgC42LG.X8akcUp0Ys1V1eRmLU2JRB1MUo!/b&bo=QAZVCLAKQA4BCcE!&rf=viewer_4" target="_blank">🔗摄影作品48</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkCNqj9PC6I3fvHXRkgdwU1hMtRqcsciSK8ALgK7XNSVRmb*b65kW3GUc*YLcscV4jQ!!/b&bo=VQhABgAKgAcRCag!&rf=viewer_4" target="_blank">🔗摄影作品49</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkLl3Qpmc.1t.SEdS044TjUEzO*9vJRzSyvSeVC34r7GrnIP.UFWfK271AtBhEVCXYg!!/b&bo=QAZVCIAHAAoRCag!&rf=viewer_4" target="_blank">🔗摄影作品50</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkIEBaIlRAENJArP9xrpr7ssuki8aOZkVemlxrI3C*Laxm7u.21gw4ntJvtTsPi4yVQ!!/b&bo=VQhABhQJzwYRCfE!&rf=viewer_4" target="_blank">🔗摄影作品51</a></p>
+					<p><a href="http://photogz.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkEwK82bhwLM93sXxezTk600oWzAFK41no9gSFd5RdNhY.TJTh0qe3yOWJqE6bY9oug!!/b&bo=QAZVCIAHAAoRCag!&rf=viewer_4" target="_blank">🔗摄影作品52</a></p>
+					<p><a href="http://photocq.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkAj0USHotzNfGpHNURYzGGxfozopXT01szY56O8snLWIlR8MtQ2IojA1eVDeh2R9TA!!/b&bo=7gdABo8NsAoRCak!&rf=viewer_4" target="_blank">🔗摄影作品53</a></p>
+					<p><a href="http://photocq.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkPPnGoPF5Dyz2cuw1yiUZ5mbq1i01YjK39VNYQDT7TLj3bEAUSZISuX9.sMbo5ko0Q!!/b&bo=QAZVCLAKQA4RCdE!&rf=viewer_4" target="_blank">🔗摄影作品54</a></p>
+					<p><a href="http://photocq.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/eUV4L3fpc9jygk8SN5vzkP0.eh6gvM5uxPF.4pVkyK2t5cel3hNZezqgHAN1H1eT1zxvwKzAB5X0niHnRB5T3A!!/b&bo=QAZVCIAHAAoRCag!&rf=viewer_4" target="_blank">🔗摄影作品55</a></p>
+
+					
+				`
+            },
+            'other2': {
+                category: '作品集',
+                title: '绘画作品',
+                meta: '油画棒',
+                content: `
+					<p>因软件内存限制问题，请点击以下链接观看：</p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqXquX9uFxZmSHZmnck57D0J8ibvJXyFHKSJdkAi1up40.kjOpDpkDG245CeAxeBGLcxLWiU2LwjwkplAT20GrKM!/b&bo=PwZVCD8GVQgBByA!&rf=viewer_4" target="_blank">🔗绘画作品1</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqQOxDMkS*T.P2HiEQJIo*Dln*43ydXOIhcqkNUWHnGfBQjoR42QYb2DcBV07A0vy7JIS2g.vSN3jXSHz6Layy*U!/b&bo=OgUPBToFDwUBByA!&rf=viewer_4" target="_blank">🔗绘画作品2</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqW0m34MaXabUxwMevnN8RdhXPW8f11GZOPQD6bqknJo5bExJ*haaCnJhRa4sioiojULq1b83WA9pQlCWhDFveUM!/b&bo=VQg*BlUIPwYBByA!&rf=viewer_4" target="_blank">🔗绘画作品3</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqR0dh2OVjCp6BSaoXEopq9ywtSm6UEYIzg8am5Yks7*g3EJ8Q.BTRIM8wJsLHUNXfFQG9tON8IQfjek6IVsS6lM!/b&bo=VQg*BlUIPwYBJwA!&rf=viewer_4" target="_blank">🔗绘画作品4</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqboqv4h.lGGW8IMC1LF3akR8RXKJMsXTthAUxU1EeT7Tg3nisLMPKxEFW43CyG6NrtPmJak1Mtjg9YUTuC8zLAM!/b&bo=QAYLB0AGCwcBNxA!&rf=viewer_4" target="_blank">🔗绘画作品5</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqTJCqEVWdsaGJ5ETNMVjAM*zppa1QyI5HLx*dx38guafCC2p1HcxgSfKy.vaYyd22QJhKgkiE2g0FczFvgvZHCQ!/b&bo=QAb0BkAG9AYBJwA!&rf=viewer_4" target="_blank">🔗绘画作品6</a></p>
+					<p><a href="http://photonj.photo.store.qq.com/psc?/V10Fi45Z1kIgAo/bqQfVz5yrrGYSXMvKr.cqcoqFVdOR.0jXyXdpHRvnKxiJl6M04GQtt4wAOrrmtLuGRRuQGPB.Ip1honpHSsvBdzDQBYxLkY908Fz.7hnB8Y!/b&bo=UAUvBlAFLwYBJwA!&rf=viewer_4" target="_blank">🔗绘画作品7</a></p>
+				`
+            },
+            'other3': {
+                category: '作品集',
+                title: '翻唱作品',
+                meta: '风格：KPOP',
+                content: `
+					<p><a href="https://c6.y.qq.com/base/fcgi-bin/u?__=29rDp7TdBHTQ" target="_blank">原曲：<Balloon in love>BY李宣美</a></p>
+					<p><a href="https://c6.y.qq.com/base/fcgi-bin/u?__=sRaDUTTdBEnR" target="_blank">原曲：<11:11>BY金泰妍</a></p>
+					
+					
+				`
+            },
+        };
+
+        // --- 2. 交互逻辑 ---
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+
+        function openDetail(id) {
+            const data = portfolioData[id] || portfolioData['default'];
+            
+            // 生成HTML
+            modalContent.innerHTML = `
+				<div class="detail-header">
+					<span class="detail-tag">${data.category}</span>
+					<h2 class="detail-title">${data.title}</h2>
+					${data.meta ? `<span class="detail-meta">${data.meta}</span>` : ''}
+					${data.platform ? `<span class="detail-platform">${data.platform}</span>` : ''}
+					
+				</div>
+				<div class="detail-body">
+					${data.content}
+				</div>
+			`;
+
+            // 显示弹窗
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // 恢复滚动
+        }
+
+        // 点击遮罩关闭
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // ESC键关闭
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
